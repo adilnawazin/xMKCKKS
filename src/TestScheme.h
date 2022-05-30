@@ -23,13 +23,19 @@ public:
 	
 	
 	static void Benchmark(long logq, long logp, long logn,int batch);
-	static void testEncrypt(long logq, long logp, long logn,string round,string trial);
+	static void testEncrypt(long logq, long logp, long logn,string round,string trial, string vector_size);
 	
 	static SecretKey Generate_public_key(SecretKey& secretKey);
 	
 	static void encryptMsg_MKCKKS(Ciphertext& cipher, Plaintext& plain,SecretKey& secretK,SecretKey& publicKey);
 	
-	static void SimpleEncryptMsg(Ciphertext& cipher, Plaintext& plain,SecretKey& EncKey,Ciphertext& cipher1, Plaintext& plain1,SecretKey& EncKey1,Ciphertext& cipher2, Plaintext& plain2,SecretKey& EncKey2,Ciphertext& cipher3, Plaintext& plain3,SecretKey& EncKey3,Ciphertext& cipher4, Plaintext& plain4,SecretKey& EncKey4,Ciphertext& cipher5, Plaintext& plain5,SecretKey& EncKey5,Ciphertext& cipher6, Plaintext& plain6,SecretKey& EncKey6,Ciphertext& cipher7, Plaintext& plain7,SecretKey& EncKey7,Ciphertext& cipher8, Plaintext& plain8,SecretKey& EncKey8,Ciphertext& cipher9, Plaintext& plain9,SecretKey& EncKey9);
+	static void SimpleEncryptMsg(Ciphertext& cipher, Plaintext& plain,SecretKey& EncKey,Ciphertext& cipher1,
+	 Plaintext& plain1,SecretKey& EncKey1,Ciphertext& cipher2, Plaintext& plain2,SecretKey& EncKey2,
+	 Ciphertext& cipher3, Plaintext& plain3,SecretKey& EncKey3,Ciphertext& cipher4, Plaintext& plain4,
+	 SecretKey& EncKey4,Ciphertext& cipher5, Plaintext& plain5,SecretKey& EncKey5,Ciphertext& cipher6, 
+	 Plaintext& plain6,SecretKey& EncKey6,Ciphertext& cipher7, Plaintext& plain7,SecretKey& EncKey7,
+	 Ciphertext& cipher8, Plaintext& plain8,SecretKey& EncKey8,Ciphertext& cipher9, Plaintext& plain9,
+	 SecretKey& EncKey9);
 
 	static Key* Convert_to_key_structure(SecretKey& secretKey);
 	

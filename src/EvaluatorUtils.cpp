@@ -6,12 +6,12 @@
 * work.  If not, see <http://creativecommons.org/licenses/by-nc/3.0/>.
 */
 #include "EvaluatorUtils.h"
-
+#include<iostream>
 #include <cmath>
 #include <complex>
 #include <cstdlib>
 
-
+using namespace std;
 //----------------------------------------------------------------------------------
 //   RANDOM REAL AND COMPLEX NUMBERS
 //----------------------------------------------------------------------------------

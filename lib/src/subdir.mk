@@ -8,6 +8,7 @@ CPP_SRCS += \
 ../src/Ciphertext.cpp \
 ../src/EvaluatorUtils.cpp \
 ../src/Key.cpp \
+../src/MKScheme.cpp \
 ../src/Plaintext.cpp \
 ../src/Ring.cpp \
 ../src/RingMultiplier.cpp \
@@ -17,13 +18,15 @@ CPP_SRCS += \
 ../src/SerializationUtils.cpp \
 ../src/StringUtils.cpp \
 ../src/TestScheme.cpp \
-../src/TimeUtils.cpp 
+../src/TimeUtils.cpp
+
 
 OBJS += \
 ./src/BootContext.o \
 ./src/Ciphertext.o \
 ./src/EvaluatorUtils.o \
 ./src/Key.o \
+./src/MKScheme.o \
 ./src/Plaintext.o \
 ./src/Ring.o \
 ./src/RingMultiplier.o \
@@ -35,11 +38,13 @@ OBJS += \
 ./src/TestScheme.o \
 ./src/TimeUtils.o 
 
+
 CPP_DEPS += \
 ./src/BootContext.d \
 ./src/Ciphertext.d \
 ./src/EvaluatorUtils.d \
 ./src/Key.d \
+./src/MKScheme.d \
 ./src/Plaintext.d \
 ./src/Ring.d \
 ./src/RingMultiplier.d \
@@ -48,8 +53,8 @@ CPP_DEPS += \
 ./src/SecretKey.d \
 ./src/SerializationUtils.d \
 ./src/StringUtils.d \
-./src/TestScheme.d \
-./src/TimeUtils.d 
+../src/TestScheme.d \
+./src/TimeUtils.d  
 
 
 # Each subdirectory must supply rules for building sources it contributes

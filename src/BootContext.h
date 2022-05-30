@@ -27,8 +27,9 @@ public:
 
 	long logp;
 
-	BootContext(uint64_t** rpvec = NULL, uint64_t** rpvecInv = NULL, uint64_t* rp1 = NULL, uint64_t* rp2 = NULL,
-			long* bndvec = NULL, long* bndvecInv = NULL, long bnd1 = 0, long bnd2 = 0, long logp = 0);
+	BootContext(uint64_t** rpvec = NULL, uint64_t** rpvecInv = NULL, uint64_t* rp1 = NULL, 
+		uint64_t* rp2 = NULL, long* bndvec = NULL, long* bndvecInv = NULL, long bnd1 = 0, 
+		long bnd2 = 0, long logp = 0);
 
 };
 

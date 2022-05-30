@@ -6,6 +6,7 @@
 * work.  If not, see <http://creativecommons.org/licenses/by-nc/3.0/>.
 */
 #include "Ring.h"
+#include<iostream>
 
 #include <NTL/BasicThreadPool.h>
 #include <NTL/lip.h>
@@ -18,6 +19,8 @@
 #include "EvaluatorUtils.h"
 #include "BootContext.h"
 #include "StringUtils.h"
+
+using namespace std;
 
 Ring::Ring() {
 
@@ -631,19 +634,19 @@ void Ring::sampleHWT(ZZ* res) {
 		long i = RandomBits_long(logN);
 		if(res[i] == 0) {
 			res[i] = (bit(tmp, idx) == 0) ? ZZ(1) : ZZ(-1);
-		        cout << "-------Size of SK Ring----" << endl;
-			cout << i << endl;
-		        cout << "-------Size of RING----" << endl;
+		 //        cout << "-------Size of SK Ring----" << endl;
+			// cout << i << endl;
+		 //        cout << "-------Size of RING----" << endl;
 			idx++;
 		}
 	}
-	cout << "-------Print the SK----" << endl;
-	cout << res;
+	// cout << "-------Print the SK----" << endl;
+	// cout << res;
 
-	//cout << "!!! Size of SK !!!" << endl;
-	//cout << h ;
-	//cout << "!!! END Size of SK !!!" << endl;
-	//StringUtils::showVec(res,20000);
+	// cout << "!!! Size of SK !!!" << endl;
+	// cout << h ;
+	// cout << "!!! END Size of SK !!!" << endl;
+	// StringUtils::showVec(res,200);
 }
 
 void Ring::sampleZO(ZZ* res) {

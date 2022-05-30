@@ -21,6 +21,7 @@
 #include "SerializationUtils.h"
 #include <chrono>
 #include <time.h>
+#include <math.h>
 
 using namespace std;
 using namespace NTL;
@@ -30,23 +31,21 @@ using namespace NTL;
 //   STANDARD TESTS
 //----------------------------------------------------------------------------------
 
-void TestScheme::Benchmark(long logq, long logp, long logn,int batch) {
+// void TestScheme::Benchmark(long logq, long logp, long logn,int batch) {
+// 	clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &ts_end);
+// 	time_task=(float)(((ts_end.tv_sec - ts_beg.tv_sec) + (ts_end.tv_nsec - ts_beg.tv_nsec) / 1e9)*1000);
+// 	timeutils.stop("----");
+// 	outfile << time_task << endl;	
+// }
+
+void TestScheme::SimpleEncryptMsg(Ciphertext& cipher, Plaintext& plain,SecretKey& EncKey,Ciphertext& cipher1, 
+	Plaintext& plain1,SecretKey& EncKey1,Ciphertext& cipher2, Plaintext& plain2,SecretKey& EncKey2,
+	Ciphertext& cipher3,Plaintext& plain3,SecretKey& EncKey3,Ciphertext& cipher4, Plaintext& plain4,
+	SecretKey& EncKey4,Ciphertext& cipher5,Plaintext& plain5,SecretKey& EncKey5,Ciphertext& cipher6, 
+	Plaintext& plain6,SecretKey& EncKey6,Ciphertext& cipher7,Plaintext& plain7,SecretKey& EncKey7,
+	Ciphertext& cipher8, Plaintext& plain8,SecretKey& EncKey8,Ciphertext& cipher9,Plaintext& plain9,SecretKey& EncKey9) {
 	
-	clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &ts_end);
-	time_task=(float)(((ts_end.tv_sec - ts_beg.tv_sec) + (ts_end.tv_nsec - ts_beg.tv_nsec) / 1e9)*1000);
-	timeutils.stop("----");
-	outfile << time_task << endl;
-
-
-
-
-
-
-	
-}
-
-void TestScheme::SimpleEncryptMsg(Ciphertext& cipher, Plaintext& plain,SecretKey& EncKey,Ciphertext& cipher1, Plaintext& plain1,SecretKey& EncKey1,Ciphertext& cipher2, Plaintext& plain2,SecretKey& EncKey2,Ciphertext& cipher3, Plaintext& plain3,SecretKey& EncKey3,Ciphertext& cipher4, Plaintext& plain4,SecretKey& EncKey4,Ciphertext& cipher5, Plaintext& plain5,SecretKey& EncKey5,Ciphertext& cipher6, Plaintext& plain6,SecretKey& EncKey6,Ciphertext& cipher7, Plaintext& plain7,SecretKey& EncKey7,Ciphertext& cipher8, Plaintext& plain8,SecretKey& EncKey8,Ciphertext& cipher9, Plaintext& plain9,SecretKey& EncKey9) {
-	//TimeUtils timeutils;
+	TimeUtils timeutils;
 	//Party0	
 	Ring ring;
 	cipher.logp = plain.logp;
@@ -62,9 +61,9 @@ void TestScheme::SimpleEncryptMsg(Ciphertext& cipher, Plaintext& plain,SecretKey
 	ring.sampleUniform2(axP, logQQ);
 	ring.mult(bxP, EncKey.sx, axP, npP, QQ);
 	ring.subFromGaussAndEqual(bxP, QQ);
-	Key* key = new Key();
-	ring.CRT(key->rax, axP, nprimes);
-	ring.CRT(key->rbx, bxP, nprimes);
+	// Key* key = new Key();
+	// ring.CRT(key->rax, axP, nprimes);
+	// ring.CRT(key->rbx, bxP, nprimes);
 	//timeutils.stop("pk_generation");
 	
 
@@ -76,9 +75,9 @@ void TestScheme::SimpleEncryptMsg(Ciphertext& cipher, Plaintext& plain,SecretKey
 	ZZ* bxP1 = new ZZ[N];
 	ring.mult(bxP1, EncKey1.sx, axP, npP, QQ);
 	ring.subFromGaussAndEqual(bxP1, QQ);
-	Key* key1 = new Key();
-	ring.CRT(key1->rax, axP, nprimes);
-	ring.CRT(key1->rbx, bxP1, nprimes);
+	// Key* key1 = new Key();
+	// ring.CRT(key1->rax, axP, nprimes);
+	// ring.CRT(key1->rbx, bxP1, nprimes);
 	
 	//Party2
 	cipher2.logp = plain2.logp;
@@ -87,9 +86,9 @@ void TestScheme::SimpleEncryptMsg(Ciphertext& cipher, Plaintext& plain,SecretKey
 	ZZ* bxP2 = new ZZ[N];
 	ring.mult(bxP2, EncKey2.sx, axP, npP, QQ);
 	ring.subFromGaussAndEqual(bxP2, QQ);
-	Key* key2 = new Key();
-	ring.CRT(key2->rax, axP, nprimes);
-	ring.CRT(key2->rbx, bxP2, nprimes);
+	// Key* key2 = new Key();
+	// ring.CRT(key2->rax, axP, nprimes);
+	// ring.CRT(key2->rbx, bxP2, nprimes);
 
 	//Party3
 	cipher3.logp = plain3.logp;
@@ -98,9 +97,9 @@ void TestScheme::SimpleEncryptMsg(Ciphertext& cipher, Plaintext& plain,SecretKey
 	ZZ* bxP3 = new ZZ[N];
 	ring.mult(bxP3, EncKey3.sx, axP, npP, QQ);
 	ring.subFromGaussAndEqual(bxP3, QQ);
-	Key* key3 = new Key();
-	ring.CRT(key3->rax, axP, nprimes);
-	ring.CRT(key3->rbx, bxP3, nprimes);
+	// Key* key3 = new Key();
+	// ring.CRT(key3->rax, axP, nprimes);
+	// ring.CRT(key3->rbx, bxP3, nprimes);
 
 
 	//Party4
@@ -110,9 +109,9 @@ void TestScheme::SimpleEncryptMsg(Ciphertext& cipher, Plaintext& plain,SecretKey
 	ZZ* bxP4 = new ZZ[N];
 	ring.mult(bxP4, EncKey4.sx, axP, npP, QQ);
 	ring.subFromGaussAndEqual(bxP4, QQ);
-	Key* key4 = new Key();
-	ring.CRT(key4->rax, axP, nprimes);
-	ring.CRT(key4->rbx, bxP4, nprimes);
+	// Key* key4 = new Key();
+	// ring.CRT(key4->rax, axP, nprimes);
+	// ring.CRT(key4->rbx, bxP4, nprimes);
 
 
 	//Party5
@@ -122,9 +121,9 @@ void TestScheme::SimpleEncryptMsg(Ciphertext& cipher, Plaintext& plain,SecretKey
 	ZZ* bxP5 = new ZZ[N];
 	ring.mult(bxP5, EncKey5.sx, axP, npP, QQ);
 	ring.subFromGaussAndEqual(bxP5, QQ);
-	Key* key5 = new Key();
-	ring.CRT(key5->rax, axP, nprimes);
-	ring.CRT(key5->rbx, bxP5, nprimes);
+	// Key* key5 = new Key();
+	// ring.CRT(key5->rax, axP, nprimes);
+	// ring.CRT(key5->rbx, bxP5, nprimes);
 
 	//Party6
 	cipher6.logp = plain6.logp;
@@ -133,9 +132,9 @@ void TestScheme::SimpleEncryptMsg(Ciphertext& cipher, Plaintext& plain,SecretKey
 	ZZ* bxP6 = new ZZ[N];
 	ring.mult(bxP6, EncKey6.sx, axP, npP, QQ);
 	ring.subFromGaussAndEqual(bxP6, QQ);
-	Key* key6 = new Key();
-	ring.CRT(key6->rax, axP, nprimes);
-	ring.CRT(key6->rbx, bxP6, nprimes);
+	// Key* key6 = new Key();
+	// ring.CRT(key6->rax, axP, nprimes);
+	// ring.CRT(key6->rbx, bxP6, nprimes);
 
 
 	//Party7
@@ -145,9 +144,9 @@ void TestScheme::SimpleEncryptMsg(Ciphertext& cipher, Plaintext& plain,SecretKey
 	ZZ* bxP7 = new ZZ[N];
 	ring.mult(bxP7, EncKey7.sx, axP, npP, QQ);
 	ring.subFromGaussAndEqual(bxP7, QQ);
-	Key* key7 = new Key();
-	ring.CRT(key7->rax, axP, nprimes);
-	ring.CRT(key7->rbx, bxP7, nprimes);
+	// Key* key7 = new Key();
+	// ring.CRT(key7->rax, axP, nprimes);
+	// ring.CRT(key7->rbx, bxP7, nprimes);
 
 
 	//Party8
@@ -157,9 +156,9 @@ void TestScheme::SimpleEncryptMsg(Ciphertext& cipher, Plaintext& plain,SecretKey
 	ZZ* bxP8 = new ZZ[N];
 	ring.mult(bxP8, EncKey8.sx, axP, npP, QQ);
 	ring.subFromGaussAndEqual(bxP8, QQ);
-	Key* key8 = new Key();
-	ring.CRT(key8->rax, axP, nprimes);
-	ring.CRT(key8->rbx, bxP8, nprimes);
+	// Key* key8 = new Key();
+	// ring.CRT(key8->rax, axP, nprimes);
+	// ring.CRT(key8->rbx, bxP8, nprimes);
 
 
 	//Party9
@@ -169,13 +168,17 @@ void TestScheme::SimpleEncryptMsg(Ciphertext& cipher, Plaintext& plain,SecretKey
 	ZZ* bxP9 = new ZZ[N];
 	ring.mult(bxP9, EncKey9.sx, axP, npP, QQ);
 	ring.subFromGaussAndEqual(bxP9, QQ);
-	Key* key9 = new Key();
-	ring.CRT(key9->rax, axP, nprimes);
-	ring.CRT(key9->rbx, bxP9, nprimes);
+	// Key* key9 = new Key();
+	// ring.CRT(key9->rax, axP, nprimes);
+	// ring.CRT(key9->rbx, bxP9, nprimes);
 
 	//Sum of public joint keys
 	//Construct Public Key
 
+	cout<<endl;
+	cout<<"============================================="<<endl;
+	cout << "Successfully Imported Data from all parties"<<endl;
+	cout<<"============================================="<<endl;
 	timeutils.start("joint_pk_generation");
 
 	ZZ* bxSum = new ZZ[N];
@@ -198,7 +201,8 @@ void TestScheme::SimpleEncryptMsg(Ciphertext& cipher, Plaintext& plain,SecretKey
 
 
 	//Encrypt Party0
-	//timeutils.start("encryption_one");
+	timeutils.start("encryption");
+	// timeutils.start("encryption_one");
 	ring.multNTT(cipher.ax, vx, keySum->rax, npP, qQ);
 	ring.addGaussAndEqual(cipher.ax, qQ);
 	ring.multNTT(cipher.bx, vx, keySum->rbx, npP, qQ);
@@ -206,9 +210,108 @@ void TestScheme::SimpleEncryptMsg(Ciphertext& cipher, Plaintext& plain,SecretKey
 	ring.addAndEqual(cipher.bx, plain.mx, qQ);
 	ring.rightShiftAndEqual(cipher.ax, logQ);
 	ring.rightShiftAndEqual(cipher.bx, logQ);
-	//timeutils.stop("encryption_one");
+	// timeutils.stop("encryption_one");
 
-	//Encrypt Party1 -- to Partyn
+	//Encrypt Party1
+	// timeutils.start("encryption_two");
+	ring.multNTT(cipher1.ax, vx, keySum->rax, npP, qQ);
+	ring.addGaussAndEqual(cipher1.ax, qQ);
+	ring.multNTT(cipher1.bx, vx, keySum->rbx, npP, qQ);
+	ring.addGaussAndEqual(cipher1.bx, qQ);
+	ring.addAndEqual(cipher1.bx, plain1.mx, qQ);
+	ring.rightShiftAndEqual(cipher1.ax, logQ);
+	ring.rightShiftAndEqual(cipher1.bx, logQ);
+	// timeutils.stop("encryption_two");
+
+	//Encrypt Party2
+	// timeutils.start("encryption_three");
+	ring.multNTT(cipher2.ax, vx, keySum->rax, npP, qQ);
+	ring.addGaussAndEqual(cipher2.ax, qQ);
+	ring.multNTT(cipher2.bx, vx, keySum->rbx, npP, qQ);
+	ring.addGaussAndEqual(cipher2.bx, qQ);
+	ring.addAndEqual(cipher2.bx, plain2.mx, qQ);
+	ring.rightShiftAndEqual(cipher2.ax, logQ);
+	ring.rightShiftAndEqual(cipher2.bx, logQ);
+	// timeutils.stop("encryption_three");
+
+	//Encrypt Party3
+	// timeutils.start("encryption_3");
+	ring.multNTT(cipher3.ax, vx, keySum->rax, npP, qQ);
+	ring.addGaussAndEqual(cipher1.ax, qQ);
+	ring.multNTT(cipher3.bx, vx, keySum->rbx, npP, qQ);
+	ring.addGaussAndEqual(cipher3.bx, qQ);
+	ring.addAndEqual(cipher3.bx, plain3.mx, qQ);
+	ring.rightShiftAndEqual(cipher3.ax, logQ);
+	ring.rightShiftAndEqual(cipher3.bx, logQ);
+	// timeutils.stop("encryption_3");
+
+	//Encrypt Party4
+	// timeutils.start("encryption_4");
+	ring.multNTT(cipher4.ax, vx, keySum->rax, npP, qQ);
+	ring.addGaussAndEqual(cipher4.ax, qQ);
+	ring.multNTT(cipher4.bx, vx, keySum->rbx, npP, qQ);
+	ring.addGaussAndEqual(cipher4.bx, qQ);
+	ring.addAndEqual(cipher4.bx, plain4.mx, qQ);
+	ring.rightShiftAndEqual(cipher4.ax, logQ);
+	ring.rightShiftAndEqual(cipher4.bx, logQ);
+	// timeutils.stop("encryption_4");
+
+	//Encrypt Party5
+	// timeutils.start("encryption_5");
+	ring.multNTT(cipher5.ax, vx, keySum->rax, npP, qQ);
+	ring.addGaussAndEqual(cipher5.ax, qQ);
+	ring.multNTT(cipher5.bx, vx, keySum->rbx, npP, qQ);
+	ring.addGaussAndEqual(cipher5.bx, qQ);
+	ring.addAndEqual(cipher5.bx, plain5.mx, qQ);
+	ring.rightShiftAndEqual(cipher5.ax, logQ);
+	ring.rightShiftAndEqual(cipher5.bx, logQ);
+	// timeutils.stop("encryption_5");
+
+	//Encrypt Party6
+	// timeutils.start("encryption_6");
+	ring.multNTT(cipher6.ax, vx, keySum->rax, npP, qQ);
+	ring.addGaussAndEqual(cipher6.ax, qQ);
+	ring.multNTT(cipher6.bx, vx, keySum->rbx, npP, qQ);
+	ring.addGaussAndEqual(cipher6.bx, qQ);
+	ring.addAndEqual(cipher6.bx, plain6.mx, qQ);
+	ring.rightShiftAndEqual(cipher6.ax, logQ);
+	ring.rightShiftAndEqual(cipher6.bx, logQ);
+	// timeutils.stop("encryption_4");
+
+	//Encrypt Party7
+	// timeutils.start("encryption_7");
+	ring.multNTT(cipher7.ax, vx, keySum->rax, npP, qQ);
+	ring.addGaussAndEqual(cipher7.ax, qQ);
+	ring.multNTT(cipher7.bx, vx, keySum->rbx, npP, qQ);
+	ring.addGaussAndEqual(cipher7.bx, qQ);
+	ring.addAndEqual(cipher7.bx, plain7.mx, qQ);
+	ring.rightShiftAndEqual(cipher7.ax, logQ);
+	ring.rightShiftAndEqual(cipher7.bx, logQ);
+	// timeutils.stop("encryption_7");
+
+	//Encrypt Party8
+	// timeutils.start("encryption_8");
+	ring.multNTT(cipher8.ax, vx, keySum->rax, npP, qQ);
+	ring.addGaussAndEqual(cipher8.ax, qQ);
+	ring.multNTT(cipher8.bx, vx, keySum->rbx, npP, qQ);
+	ring.addGaussAndEqual(cipher8.bx, qQ);
+	ring.addAndEqual(cipher8.bx, plain8.mx, qQ);
+	ring.rightShiftAndEqual(cipher8.ax, logQ);
+	ring.rightShiftAndEqual(cipher8.bx, logQ);
+	// timeutils.stop("encryption_8");
+
+	//Encrypt Party9
+	// timeutils.start("encryption_9");
+	ring.multNTT(cipher9.ax, vx, keySum->rax, npP, qQ);
+	ring.addGaussAndEqual(cipher9.ax, qQ);
+	ring.multNTT(cipher9.bx, vx, keySum->rbx, npP, qQ);
+	ring.addGaussAndEqual(cipher9.bx, qQ);
+	ring.addAndEqual(cipher9.bx, plain9.mx, qQ);
+	ring.rightShiftAndEqual(cipher9.ax, logQ);
+	ring.rightShiftAndEqual(cipher9.bx, logQ);
+	// timeutils.stop("encryption_9");
+	timeutils.stop("encryption");
+	 // -- to Partyn
 	//...
 	
 	delete[] vx;
@@ -282,7 +385,7 @@ Key* TestScheme::Convert_to_key_structure(SecretKey& secretKey) {
 }
 
 //Ecnryption and Decryption via joint public key
-void TestScheme::testEncrypt(long logq, long logp, long logn,string round,string trial) {
+void TestScheme::testEncrypt(long logq, long logp, long logn,string round,string trial, string vector_size) {
 	TimeUtils timeutils;	
 	int sum = 0;
 	double x;
@@ -290,216 +393,227 @@ void TestScheme::testEncrypt(long logq, long logp, long logn,string round,string
 	long n= (1 << logn);
 	ostringstream temp;
 	temp << round;
-	complex<double>* mvec = EvaluatorUtils::randomComplexArray(n);
+	double* mvec = EvaluatorUtils::randomRealArray(n);
 	
 	//Data import Party 0
-	inFile.open("path_to_data_file/doc_T("+trial+")_run_"+round+".txt");
+	//inFile.open("/home/adel/heaan_test/doc_T("+trial+")_run_"+round+".txt");
+	inFile.open("/home/adel/heaan_test/doc_T0_"+round+"_"+trial+".txt");
 	long i=0;
 	if (!inFile) {
-	//cout << "Unable to open file";
+	cout << "Unable to open file doc_T0_"+round+"_"+trial<<endl;
 	exit(1); // terminate with error
 	}
 	while (inFile >> x) {
-	complex<double> tmp;
-	tmp.real((double) x);
-	tmp.imag((double) x);
+	double tmp;
+	tmp = x;
+	//tmp.imag((double) x);
 	mvec[i] = tmp;
 	i++;
-	//cout << "Value = " << x << endl; 
+	//cout << "Input = " << x<<endl; 
 	}
+	// cout << "Value of vector = " << *mvec << endl;
+	// cout<< "successfully imported data from party 0" << endl;
 	inFile.close();
 	srand(time(NULL));
 	SetNumThreads(8);
 	
-
-
-
-
-
-	
 	//Data import Party 1
-	complex<double>* mvec1 = EvaluatorUtils::randomComplexArray(n);
-	inFile.open("path_to_data_file/doc_T("+trial+")_run2_"+round+".txt");
+	double* mvec1 = EvaluatorUtils::randomRealArray(n);
+	inFile.open("/home/adel/heaan_test/doc_T1_"+round+"_"+trial+".txt");
 	i=0;
 	if (!inFile) {
+		cout << "Unable to open file doc_T1_"+round+"_"+trial+".txt"<<endl;
 	exit(1); // terminate with error
 	}
 	while (inFile >> x) {
-	complex<double> tmp;
-	tmp.real((double) x);
-	tmp.imag((double) x);
+	double tmp;
+	tmp = x;
+	//tmp.real((double) x);
+	// tmp.imag((double) x);
 	mvec1[i] = tmp;
 	i++;
-
-	//cout << "Value = " << x << endl; 
+	// cout << "Value = " << x << endl; 
 	}
-
+	// cout << "Sucessfully imported data from party 1" << endl;
 	inFile.close();
 
 	//Data import Party 2
-	complex<double>* mvec2 = EvaluatorUtils::randomComplexArray(n);
-	inFile.open("path_to_data_file/doc_T("+trial+")_run3_"+round+".txt");
+	double* mvec2 = EvaluatorUtils::randomRealArray(n);
+	inFile.open("/home/adel/heaan_test/doc_T2_"+round+"_"+trial+".txt");
 	i=0;
 	if (!inFile) {
-	//cout << "Unable to open file";
+	cout << "Unable to open file doc_T2_"+round+"_"+trial+".txt"<<endl;
 	exit(1); // terminate with error
 	}
 	while (inFile >> x) {
-	complex<double> tmp;
-	tmp.real((double) x);
-	tmp.imag((double) x);
+	double tmp;
+	tmp = x;
+	//tmp.real((double) x);
+	// tmp.imag((double) x);
 	mvec2[i] = tmp;
 	i++;
 
-	//cout << "Value = " << x << endl; 
+	// cout << "Input = " << x << endl; 
 	}
+	// cout << "Sucessfully imported data from party 2" << endl;
 
 	inFile.close();
 
 	//Data import Party 3
-	complex<double>* mvec3 = EvaluatorUtils::randomComplexArray(n);
-	inFile.open("path_to_data_file/doc_T("+trial+")_run4_"+round+".txt");
+	double* mvec3 = EvaluatorUtils::randomRealArray(n);
+	inFile.open("/home/adel/heaan_test/doc_T3_"+round+"_"+trial+".txt");
 	i=0;
 	if (!inFile) {
-	//cout << "Unable to open file";
+	cout << "Unable to open file doc_T3_"+round+"_"+trial<<endl;
 	exit(1); // terminate with error
 	}
 	while (inFile >> x) {
-	complex<double> tmp;
-	tmp.real((double) x);
-	tmp.imag((double) x);
+	double tmp;
+	tmp = x;
+	//tmp.real((double) x);
+	// tmp.imag((double) x);
 	mvec3[i] = tmp;
 	i++;
 
-	//cout << "Value = " << x << endl; 
+	// cout << "Input = " << x << endl; 
 	}
-
+	// cout << "Sucessfully imported data from party 3" << endl;
 	inFile.close();
 
 
 	//Data import Party 4
-	complex<double>* mvec4 = EvaluatorUtils::randomComplexArray(n);
-	inFile.open("path_to_data_file/doc_T("+trial+")_run5_"+round+".txt");
+	double* mvec4 = EvaluatorUtils::randomRealArray(n);
+	inFile.open("/home/adel/heaan_test/doc_T4_"+round+"_"+trial+".txt");
 	i=0;
 	if (!inFile) {
-	//cout << "Unable to open file";
+	cout << "Unable to open file doc_T4_"+round+"_"+trial<<endl;
 	exit(1); // terminate with error
 	}
 	while (inFile >> x) {
-	complex<double> tmp;
-	tmp.real((double) x);
-	tmp.imag((double) x);
+	double tmp;
+	tmp = x;
+	//complex<double> tmp;
+	//tmp.real((double) x);
+	// tmp.imag((double) x);
 	mvec4[i] = tmp;
 	i++;
-
-	//cout << "Value = " << x << endl; 
+	// cout << "Sucessfully imported data from party 4" << endl;
+	// cout << "Input = " << x << endl; 
 	}
 
 	inFile.close();
 
 
 	//Data import Party 5
-	complex<double>* mvec5 = EvaluatorUtils::randomComplexArray(n);
-	inFile.open("path_to_data_file/doc_T("+trial+")_run6_"+round+".txt");
+	double* mvec5 = EvaluatorUtils::randomRealArray(n);
+	inFile.open("/home/adel/heaan_test/doc_T5_"+round+"_"+trial+".txt");
 	i=0;
 	if (!inFile) {
-	//cout << "Unable to open file";
+	cout << "Unable to open file doc_T5_"+round+"_"+trial<<endl;
 	exit(1); // terminate with error
 	}
 	while (inFile >> x) {
-	complex<double> tmp;
-	tmp.real((double) x);
-	tmp.imag((double) x);
+	double tmp;
+	tmp = x;	
+	// complex<double> tmp;
+	// tmp.real((double) x);
+	// tmp.imag((double) x);
 	mvec5[i] = tmp;
 	i++;
 
-	//cout << "Value = " << x << endl; 
+	// cout << "Input = " << x << endl; 
 	}
-
+	// cout << "Sucessfully imported data from party 5" << endl;
 	inFile.close();
 
 
 	//Data import Party 6
-	complex<double>* mvec6 = EvaluatorUtils::randomComplexArray(n);
-	inFile.open("path_to_data_file/doc_T("+trial+")_run7_"+round+".txt");
+	double* mvec6 = EvaluatorUtils::randomRealArray(n);
+	inFile.open("/home/adel/heaan_test/doc_T6_"+round+"_"+trial+".txt");
 	i=0;
 	if (!inFile) {
-	//cout << "Unable to open file";
+	cout << "Unable to open file doc_T6_"+round+"_"+trial<<endl;
 	exit(1); // terminate with error
 	}
 	while (inFile >> x) {
-	complex<double> tmp;
-	tmp.real((double) x);
-	tmp.imag((double) x);
+	double tmp;
+	tmp = x;
+	//complex<double> tmp;
+	//tmp.real((double) x);
+	// tmp.imag((double) x);
 	mvec6[i] = tmp;
 	i++;
 
-	//cout << "Value = " << x << endl; 
+	// cout << "Input = " << x << endl; 
 	}
-
+	// cout << "Sucessfully imported data from party 6" << endl;
 	inFile.close();
 
 
 	//Data import Party 7
-	complex<double>* mvec7 = EvaluatorUtils::randomComplexArray(n);
-	inFile.open("path_to_data_file/doc_T("+trial+")_run8_"+round+".txt");
+	double* mvec7 = EvaluatorUtils::randomRealArray(n);
+	inFile.open("/home/adel/heaan_test/doc_T7_"+round+"_"+trial+".txt");
 	i=0;
 	if (!inFile) {
-	//cout << "Unable to open file";
+	cout << "Unable to open file doc_T7_"+round+"_"+trial<<endl;
 	exit(1); // terminate with error
 	}
 	while (inFile >> x) {
-	complex<double> tmp;
-	tmp.real((double) x);
-	tmp.imag((double) x);
+	double tmp;
+	tmp = x;
+	//complex<double> tmp;
+	//tmp.real((double) x);
+	// tmp.imag((double) x);
 	mvec7[i] = tmp;
 	i++;
 
-	//cout << "Value = " << x << endl; 
+	// cout << "Input = " << x << endl; 
 	}
-
+	// cout << "Sucessfully imported data from party 7" << endl;
 	inFile.close();
 
 
 	//Data import Party 8
-	complex<double>* mvec8 = EvaluatorUtils::randomComplexArray(n);
-	inFile.open("path_to_data_file/doc_T("+trial+")_run9_"+round+".txt");
+	double* mvec8 = EvaluatorUtils::randomRealArray(n);
+	inFile.open("/home/adel/heaan_test/doc_T8_"+round+"_"+trial+".txt");
 	i=0;
 	if (!inFile) {
-	//cout << "Unable to open file";
+	cout << "Unable to open file doc_T8_"+round+"_"+trial<<endl;
 	exit(1); // terminate with error
 	}
 	while (inFile >> x) {
-	complex<double> tmp;
-	tmp.real((double) x);
-	tmp.imag((double) x);
+	double tmp;
+	tmp = x;
+	//complex<double> tmp;
+	//tmp.real((double) x);
+	// tmp.imag((double) x);
 	mvec8[i] = tmp;
 	i++;
-
-	//cout << "Value = " << x << endl; 
+	// cout << "Sucessfully imported data from party 8" << endl;
+	// cout << "Input = " << x << endl; 
 	}
-
 	inFile.close();
 
 
 	//Data import Party 9
-	complex<double>* mvec9 = EvaluatorUtils::randomComplexArray(n);
-	inFile.open("path_to_data_file/doc_T("+trial+")_run10_"+round+".txt");
+	double* mvec9 = EvaluatorUtils::randomRealArray(n);
+	inFile.open("/home/adel/heaan_test/doc_T9_"+round+"_"+trial+".txt");
 	i=0;
 	if (!inFile) {
-	//cout << "Unable to open file";
+	cout << "Unable to open file doc_T9_"+round+"_"+trial<<endl;
 	exit(1); // terminate with error
 	}
 	while (inFile >> x) {
-	complex<double> tmp;
-	tmp.real((double) x);
-	tmp.imag((double) x);
+	double tmp;
+	tmp = x;
+	//complex<double> tmp;
+	//tmp.real((double) x);
+	// tmp.imag((double) x);
 	mvec9[i] = tmp;
 	i++;
-
-	//cout << "Value = " << x << endl; 
+	// cout << "Sucessfully imported data from party 9" << endl;
+	// cout << "Input = " << x << endl; 
 	}
-
 	inFile.close();
 
 
@@ -510,10 +624,10 @@ void TestScheme::testEncrypt(long logq, long logp, long logn,string round,string
 	Ring ring;
 	SecretKey secretKey(ring);
 	Scheme scheme(secretKey, ring);
-	cout << secretKey.sx;
 	Plaintext plain;
 	scheme.encode(plain, mvec, n, logp, logq);
 	Ciphertext cipher;
+	
 	//Part1 Preparation
 	Ring ring1;
 	SecretKey secretKey1(ring1);
@@ -591,66 +705,46 @@ void TestScheme::testEncrypt(long logq, long logp, long logn,string round,string
 	scheme9.encode(plain9, mvec9, n, logp, logq);
 
 	//Ecnryption
-	SimpleEncryptMsg(cipher,plain,secretKey,cipher1,plain1,secretKey1,cipher2,plain2,secretKey2,cipher3,plain3,secretKey3,cipher4,plain4,secretKey4,cipher5,plain5,secretKey5,cipher6,plain6,secretKey6,cipher7,plain7,secretKey7,cipher8,plain8,secretKey8,cipher9,plain9,secretKey9);
+	SimpleEncryptMsg(cipher,plain,secretKey,cipher1,plain1,secretKey1,cipher2,plain2,secretKey2,cipher3,plain3,secretKey3,
+		cipher4,plain4,secretKey4,cipher5,plain5,secretKey5,cipher6,plain6,secretKey6,cipher7,plain7,secretKey7,cipher8,
+		plain8,secretKey8,cipher9,plain9,secretKey9);
 
 
 	timeutils.start("ciphers_sum");
 	//Ciphers sum
 	Ring ring_1;
 	Ciphertext cipherAdd;
-
-	ZZ q1 = ring_1.qpows[cipher1.logq];
-	ZZ q2 = ring_1.qpows[cipher2.logq];
-	ZZ q3 = ring_1.qpows[cipher3.logq];
-	ZZ q4 = ring_1.qpows[cipher4.logq];
-	ZZ q5 = ring_1.qpows[cipher5.logq];
-	ZZ q6 = ring_1.qpows[cipher6.logq];
-	ZZ q7 = ring_1.qpows[cipher7.logq];
-	ZZ q8 = ring_1.qpows[cipher8.logq];
-	ZZ q9 = ring_1.qpows[cipher9.logq];
+	ZZ q = ring.qpows[cipher.logq];
 
 	cipherAdd.copyParams(cipher);
 	
-	ring.add(cipherAdd.ax, cipher.ax, cipher1.ax, q1);
-	ring.add(cipherAdd.bx, cipher.bx, cipher1.bx, q1);
+	ring.add(cipherAdd.ax, cipher.ax, cipher1.ax, q);
+	ring.add(cipherAdd.bx, cipher.bx, cipher1.bx, q);
 
-	ring.add(cipherAdd.ax, cipherAdd.ax, cipher2.ax, q2);
-	ring.add(cipherAdd.bx, cipherAdd.bx, cipher2.bx, q2);
+	ring.add(cipherAdd.ax, cipherAdd.ax, cipher2.ax, q);
+	ring.add(cipherAdd.bx, cipherAdd.bx, cipher2.bx, q);
 	
-	ring.add(cipherAdd.ax, cipherAdd.ax, cipher3.ax, q3);
-	ring.add(cipherAdd.bx, cipherAdd.bx, cipher3.bx, q3);
+	ring.add(cipherAdd.ax, cipherAdd.ax, cipher3.ax, q);
+	ring.add(cipherAdd.bx, cipherAdd.bx, cipher3.bx, q);
 	
-	ring.add(cipherAdd.ax, cipherAdd.ax, cipher4.ax, q4);
-	ring.add(cipherAdd.bx, cipherAdd.bx, cipher4.bx, q4);
+	ring.add(cipherAdd.ax, cipherAdd.ax, cipher4.ax, q);
+	ring.add(cipherAdd.bx, cipherAdd.bx, cipher4.bx, q);
 
-	ring.add(cipherAdd.ax, cipherAdd.ax, cipher5.ax, q5);
-	ring.add(cipherAdd.bx, cipherAdd.bx, cipher5.bx, q5);
+	ring.add(cipherAdd.ax, cipherAdd.ax, cipher5.ax, q);
+	ring.add(cipherAdd.bx, cipherAdd.bx, cipher5.bx, q);
 
-	ring.add(cipherAdd.ax, cipherAdd.ax, cipher6.ax, q6);
-	ring.add(cipherAdd.bx, cipherAdd.bx, cipher6.bx, q6);
+	ring.add(cipherAdd.ax, cipherAdd.ax, cipher6.ax, q);
+	ring.add(cipherAdd.bx, cipherAdd.bx, cipher6.bx, q);
 
-	ring.add(cipherAdd.ax, cipherAdd.ax, cipher7.ax, q7);
-	ring.add(cipherAdd.bx, cipherAdd.bx, cipher7.bx, q7);
+	ring.add(cipherAdd.ax, cipherAdd.ax, cipher7.ax, q);
+	ring.add(cipherAdd.bx, cipherAdd.bx, cipher7.bx, q);
 
-	ring.add(cipherAdd.ax, cipherAdd.ax, cipher8.ax, q8);
-	ring.add(cipherAdd.bx, cipherAdd.bx, cipher8.bx, q8);
+	ring.add(cipherAdd.ax, cipherAdd.ax, cipher8.ax, q);
+	ring.add(cipherAdd.bx, cipherAdd.bx, cipher8.bx, q);
 
-	ring.add(cipherAdd.ax, cipherAdd.ax, cipher9.ax, q9);
-	ring.add(cipherAdd.bx, cipherAdd.bx, cipher9.bx, q9);
+	ring.add(cipherAdd.ax, cipherAdd.ax, cipher9.ax, q);
+	ring.add(cipherAdd.bx, cipherAdd.bx, cipher9.bx, q);
 	timeutils.stop("ciphers_sum");
-
-
-
-	ZZ* sx = new ZZ[N];
-	ZZ* sx1 = new ZZ[N];
-	ZZ* sx3 = new ZZ[N];
-	ZZ* sx4 = new ZZ[N];
-	ZZ* sx5 = new ZZ[N];
-	ZZ* sx6 = new ZZ[N];
-	ZZ* sx7 = new ZZ[N];
-	ZZ* sx8 = new ZZ[N];
-	ZZ* sx9 = new ZZ[N];
-	ZZ* sx10 = new ZZ[N];
 	
 	//New TEST
 	Plaintext plain_t;
@@ -665,7 +759,7 @@ void TestScheme::testEncrypt(long logq, long logp, long logn,string round,string
 	Plaintext plain_t9;
 	Plaintext plain_t10;
 
-	ZZ q = ring.qpows[cipher.logq];
+
 	plain_t.logp = cipher.logp;
 	plain_t.logq = cipher.logq;
 	plain_t.n = cipher.n;
@@ -674,11 +768,9 @@ void TestScheme::testEncrypt(long logq, long logp, long logn,string round,string
 	plain_t1.logq = cipher1.logq;
 	plain_t1.n = cipher1.n;
 
-
 	plain_t2.logp = cipher2.logp;
 	plain_t2.logq = cipher2.logq;
 	plain_t2.n = cipher2.n;
-
 
 	plain_t3.logp = cipher3.logp;
 	plain_t3.logq = cipher3.logq;
@@ -712,21 +804,31 @@ void TestScheme::testEncrypt(long logq, long logp, long logn,string round,string
 
 
 	//Decryption share p0
-	//timeutils.start("dec_share");
-	long np = ceil((1 + cipher1.logq + logN + 2)/(double)pbnd);
+	timeutils.start("dec_share");
+	long np = ceil((1 + cipher.logq + logN + 2)/(double)pbnd);
 	ring.mult(plain_t.mx, cipherAdd.ax, secretKey.sx, np, q);
-	ring.mult(plain_t1.mx, cipherAdd.ax, secretKey1.sx, np, q1);
-	ring.mult(plain_t2.mx, cipherAdd.ax, secretKey2.sx, np, q2);
-	ring.mult(plain_t3.mx, cipherAdd.ax, secretKey3.sx, np, q3);
-	ring.mult(plain_t4.mx, cipherAdd.ax, secretKey4.sx, np, q4);
-	ring.mult(plain_t5.mx, cipherAdd.ax, secretKey5.sx, np, q5);
-	ring.mult(plain_t6.mx, cipherAdd.ax, secretKey6.sx, np, q6);
-	ring.mult(plain_t7.mx, cipherAdd.ax, secretKey7.sx, np, q7);
-	ring.mult(plain_t8.mx, cipherAdd.ax, secretKey8.sx, np, q8);
-	ring.mult(plain_t9.mx, cipherAdd.ax, secretKey9.sx, np, q9);
+	ring.mult(plain_t1.mx, cipherAdd.ax, secretKey1.sx, np, q);
+	ring.mult(plain_t2.mx, cipherAdd.ax, secretKey2.sx, np, q);
+	ring.mult(plain_t3.mx, cipherAdd.ax, secretKey3.sx, np, q);
+	ring.mult(plain_t4.mx, cipherAdd.ax, secretKey4.sx, np, q);
+	ring.mult(plain_t5.mx, cipherAdd.ax, secretKey5.sx, np, q);
+	ring.mult(plain_t6.mx, cipherAdd.ax, secretKey6.sx, np, q);
+	ring.mult(plain_t7.mx, cipherAdd.ax, secretKey7.sx, np, q);
+	ring.mult(plain_t8.mx, cipherAdd.ax, secretKey8.sx, np, q);
+	ring.mult(plain_t9.mx, cipherAdd.ax, secretKey9.sx, np, q);
 	
 	ZZ qQ = ring.qpows[plain_t.logq + logQ];
-	ring.addGaussAndEqual(plain_t.mx, qQ);
+	double _sigma = 19.0;
+	ring.addGaussAndEqual(plain_t.mx, qQ, _sigma);
+	ring.addGaussAndEqual(plain_t1.mx, qQ, _sigma);
+	ring.addGaussAndEqual(plain_t2.mx, qQ, _sigma);
+	ring.addGaussAndEqual(plain_t3.mx, qQ, _sigma);	
+	ring.addGaussAndEqual(plain_t4.mx, qQ, _sigma);	
+	ring.addGaussAndEqual(plain_t5.mx, qQ, _sigma);	
+	ring.addGaussAndEqual(plain_t6.mx, qQ, _sigma);	
+	ring.addGaussAndEqual(plain_t7.mx, qQ, _sigma);
+	ring.addGaussAndEqual(plain_t8.mx, qQ, _sigma);
+	ring.addGaussAndEqual(plain_t9.mx, qQ, _sigma);		
 	ring.addAndEqual(plain_t.mx, plain_t1.mx, q);
 	ring.addAndEqual(plain_t.mx, plain_t2.mx, q);	
 	ring.addAndEqual(plain_t.mx, plain_t3.mx, q);
@@ -736,21 +838,33 @@ void TestScheme::testEncrypt(long logq, long logp, long logn,string round,string
 	ring.addAndEqual(plain_t.mx, plain_t7.mx, q);
 	ring.addAndEqual(plain_t.mx, plain_t8.mx, q);
 	ring.addAndEqual(plain_t.mx, plain_t9.mx, q);
+	timeutils.stop("dec_share");
 
 
 	//Add C0 to Di sum
-	timeutils.start("add_C0");
+	timeutils.start("Decryption");
 	ring.addAndEqual(plain_t.mx, cipherAdd.bx, q);
-	timeutils.stop("add_C0");
+	// timeutils.stop("add_C0");
 
 	complex<double>* res=scheme.decode(plain_t);
+	timeutils.stop("Decryption");
 
-	StringUtils::showVec(res,10);
+	double* madd = new double[n];
+
+	for(long i = 0; i < n; i++) {
+		madd[i] = mvec[i] + mvec1[i] + mvec2[i] + mvec3[i] + mvec4[i] + mvec5[i] + mvec6[i] + mvec7[i] + mvec8[i] + mvec9[i];
+	}
+	cout<< "========================="<<endl;
+	StringUtils::showVec(madd,20);
+	cout << "========================"<<endl;
+
+	StringUtils::showVec_RP(res,20);
+	StringUtils::compare(madd,res,n,"Add");
+	// int vec= stoi(vector_size);
+	// StringUtils::output(res,vec);
 	//end of decryption
 	
-	return ;
-	
-
+	return ;	
 }	
 
 void TestScheme::testEncryptBySk(long logq, long logp, long logn) {

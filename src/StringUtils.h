@@ -29,6 +29,7 @@ public:
 	static void showVec(double* vals, long size);
 
 	static void showVec(complex<double>* vals, long size);
+	static void showVec_RP(complex<double>* vals, long size);
 
 	static void showVec(ZZ* vals, long size);
 
@@ -44,6 +45,8 @@ public:
 
 	static void compare(double* vals1, double* vals2, long size, string prefix);
 
+	static void compare(double* vals1, complex<double>* vals2, long size, string prefix);
+
 	static void compare(complex<double>* vals1, complex<double>* vals2, long size, string prefix);
 
 	static void compare(double* vals1, double val2, long size, string prefix);
@@ -53,6 +56,10 @@ public:
 	static void compare(double val1, double* vals2, long size, string prefix);
 
 	static void compare(complex<double> val1, complex<double>* vals2, long size, string prefix);
+
+
+
+	static void output(complex<double>* vals2, long size);
 
 };
 

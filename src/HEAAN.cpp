@@ -6,6 +6,7 @@
 * work.  If not, see <http://creativecommons.org/licenses/by-nc/3.0/>.
 */
 #include "TestScheme.h"
+#include "MKScheme.h"
 
 int main() {
 
@@ -16,6 +17,7 @@ int main() {
 
 
 	TestScheme::testEncrypt(1200, 30, 4);
+	MKScheme:: Encode(1200,30,4)
 //	TestScheme::testEncryptSingle(300, 30);
 //	TestScheme::testAdd(1200, 30, 4);
 //	TestScheme::testMult(1200, 30, 4);
