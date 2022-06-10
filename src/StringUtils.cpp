@@ -107,11 +107,6 @@ void StringUtils::compare(double* vals1, complex<double>* vals2, long size, stri
 	fstream mserec;
 	for (long i = 0; i < size; ++i) {
 		e_single = vals1[i]-vals2[i].real();
-		// cout << "---------------------" << endl;
-		// cout << "m" + prefix + ": " << i << " :" << vals1[i] << endl;
-		// cout << "d" + prefix + ": " << i << " :" << vals2[i].real() << endl;
-		// cout << "e" + prefix + ": " << i << " :" << e_single << endl;
-		// cout << "---------------------" << endl;
 		error = error + e_single; 
 	}
 	error = (pow(error,2))/size;

@@ -634,19 +634,9 @@ void Ring::sampleHWT(ZZ* res) {
 		long i = RandomBits_long(logN);
 		if(res[i] == 0) {
 			res[i] = (bit(tmp, idx) == 0) ? ZZ(1) : ZZ(-1);
-		 //        cout << "-------Size of SK Ring----" << endl;
-			// cout << i << endl;
-		 //        cout << "-------Size of RING----" << endl;
 			idx++;
 		}
 	}
-	// cout << "-------Print the SK----" << endl;
-	// cout << res;
-
-	// cout << "!!! Size of SK !!!" << endl;
-	// cout << h ;
-	// cout << "!!! END Size of SK !!!" << endl;
-	// StringUtils::showVec(res,200);
 }
 
 void Ring::sampleZO(ZZ* res) {

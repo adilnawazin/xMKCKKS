@@ -61,10 +61,6 @@ void TestScheme::SimpleEncryptMsg(Ciphertext& cipher, Plaintext& plain,SecretKey
 	ring.sampleUniform2(axP, logQQ);
 	ring.mult(bxP, EncKey.sx, axP, npP, QQ);
 	ring.subFromGaussAndEqual(bxP, QQ);
-	// Key* key = new Key();
-	// ring.CRT(key->rax, axP, nprimes);
-	// ring.CRT(key->rbx, bxP, nprimes);
-	//timeutils.stop("pk_generation");
 	
 
 	
@@ -75,9 +71,6 @@ void TestScheme::SimpleEncryptMsg(Ciphertext& cipher, Plaintext& plain,SecretKey
 	ZZ* bxP1 = new ZZ[N];
 	ring.mult(bxP1, EncKey1.sx, axP, npP, QQ);
 	ring.subFromGaussAndEqual(bxP1, QQ);
-	// Key* key1 = new Key();
-	// ring.CRT(key1->rax, axP, nprimes);
-	// ring.CRT(key1->rbx, bxP1, nprimes);
 	
 	//Party2
 	cipher2.logp = plain2.logp;
@@ -86,9 +79,6 @@ void TestScheme::SimpleEncryptMsg(Ciphertext& cipher, Plaintext& plain,SecretKey
 	ZZ* bxP2 = new ZZ[N];
 	ring.mult(bxP2, EncKey2.sx, axP, npP, QQ);
 	ring.subFromGaussAndEqual(bxP2, QQ);
-	// Key* key2 = new Key();
-	// ring.CRT(key2->rax, axP, nprimes);
-	// ring.CRT(key2->rbx, bxP2, nprimes);
 
 	//Party3
 	cipher3.logp = plain3.logp;
@@ -97,9 +87,6 @@ void TestScheme::SimpleEncryptMsg(Ciphertext& cipher, Plaintext& plain,SecretKey
 	ZZ* bxP3 = new ZZ[N];
 	ring.mult(bxP3, EncKey3.sx, axP, npP, QQ);
 	ring.subFromGaussAndEqual(bxP3, QQ);
-	// Key* key3 = new Key();
-	// ring.CRT(key3->rax, axP, nprimes);
-	// ring.CRT(key3->rbx, bxP3, nprimes);
 
 
 	//Party4
@@ -109,9 +96,6 @@ void TestScheme::SimpleEncryptMsg(Ciphertext& cipher, Plaintext& plain,SecretKey
 	ZZ* bxP4 = new ZZ[N];
 	ring.mult(bxP4, EncKey4.sx, axP, npP, QQ);
 	ring.subFromGaussAndEqual(bxP4, QQ);
-	// Key* key4 = new Key();
-	// ring.CRT(key4->rax, axP, nprimes);
-	// ring.CRT(key4->rbx, bxP4, nprimes);
 
 
 	//Party5
@@ -121,9 +105,6 @@ void TestScheme::SimpleEncryptMsg(Ciphertext& cipher, Plaintext& plain,SecretKey
 	ZZ* bxP5 = new ZZ[N];
 	ring.mult(bxP5, EncKey5.sx, axP, npP, QQ);
 	ring.subFromGaussAndEqual(bxP5, QQ);
-	// Key* key5 = new Key();
-	// ring.CRT(key5->rax, axP, nprimes);
-	// ring.CRT(key5->rbx, bxP5, nprimes);
 
 	//Party6
 	cipher6.logp = plain6.logp;
@@ -132,9 +113,6 @@ void TestScheme::SimpleEncryptMsg(Ciphertext& cipher, Plaintext& plain,SecretKey
 	ZZ* bxP6 = new ZZ[N];
 	ring.mult(bxP6, EncKey6.sx, axP, npP, QQ);
 	ring.subFromGaussAndEqual(bxP6, QQ);
-	// Key* key6 = new Key();
-	// ring.CRT(key6->rax, axP, nprimes);
-	// ring.CRT(key6->rbx, bxP6, nprimes);
 
 
 	//Party7
@@ -144,9 +122,6 @@ void TestScheme::SimpleEncryptMsg(Ciphertext& cipher, Plaintext& plain,SecretKey
 	ZZ* bxP7 = new ZZ[N];
 	ring.mult(bxP7, EncKey7.sx, axP, npP, QQ);
 	ring.subFromGaussAndEqual(bxP7, QQ);
-	// Key* key7 = new Key();
-	// ring.CRT(key7->rax, axP, nprimes);
-	// ring.CRT(key7->rbx, bxP7, nprimes);
 
 
 	//Party8
@@ -156,10 +131,6 @@ void TestScheme::SimpleEncryptMsg(Ciphertext& cipher, Plaintext& plain,SecretKey
 	ZZ* bxP8 = new ZZ[N];
 	ring.mult(bxP8, EncKey8.sx, axP, npP, QQ);
 	ring.subFromGaussAndEqual(bxP8, QQ);
-	// Key* key8 = new Key();
-	// ring.CRT(key8->rax, axP, nprimes);
-	// ring.CRT(key8->rbx, bxP8, nprimes);
-
 
 	//Party9
 	cipher9.logp = plain9.logp;
@@ -168,9 +139,6 @@ void TestScheme::SimpleEncryptMsg(Ciphertext& cipher, Plaintext& plain,SecretKey
 	ZZ* bxP9 = new ZZ[N];
 	ring.mult(bxP9, EncKey9.sx, axP, npP, QQ);
 	ring.subFromGaussAndEqual(bxP9, QQ);
-	// Key* key9 = new Key();
-	// ring.CRT(key9->rax, axP, nprimes);
-	// ring.CRT(key9->rbx, bxP9, nprimes);
 
 	//Sum of public joint keys
 	//Construct Public Key
@@ -197,7 +165,8 @@ void TestScheme::SimpleEncryptMsg(Ciphertext& cipher, Plaintext& plain,SecretKey
 	ring.CRT(keySum->rax, axP, nprimes);
 	ring.CRT(keySum->rbx, bxSum, nprimes);
 	timeutils.stop("joint_pk_generation");
-	delete[] axP; delete[] bxP;
+	delete[] axP; delete[] bxP; delete[] bxP1; delete[] bxP2; delete[] bxP3;
+	delete[] bxP4; delete[] bxP5; delete[] bxP6; delete[] bxP7; delete[] bxP8; delete[] bxP9;
 
 
 	//Encrypt Party0
@@ -409,10 +378,7 @@ void TestScheme::testEncrypt(long logq, long logp, long logn,string round,string
 	//tmp.imag((double) x);
 	mvec[i] = tmp;
 	i++;
-	//cout << "Input = " << x<<endl; 
 	}
-	// cout << "Value of vector = " << *mvec << endl;
-	// cout<< "successfully imported data from party 0" << endl;
 	inFile.close();
 	srand(time(NULL));
 	SetNumThreads(8);
@@ -432,9 +398,7 @@ void TestScheme::testEncrypt(long logq, long logp, long logn,string round,string
 	// tmp.imag((double) x);
 	mvec1[i] = tmp;
 	i++;
-	// cout << "Value = " << x << endl; 
 	}
-	// cout << "Sucessfully imported data from party 1" << endl;
 	inFile.close();
 
 	//Data import Party 2
@@ -448,14 +412,9 @@ void TestScheme::testEncrypt(long logq, long logp, long logn,string round,string
 	while (inFile >> x) {
 	double tmp;
 	tmp = x;
-	//tmp.real((double) x);
-	// tmp.imag((double) x);
 	mvec2[i] = tmp;
 	i++;
-
-	// cout << "Input = " << x << endl; 
 	}
-	// cout << "Sucessfully imported data from party 2" << endl;
 
 	inFile.close();
 
@@ -470,14 +429,10 @@ void TestScheme::testEncrypt(long logq, long logp, long logn,string round,string
 	while (inFile >> x) {
 	double tmp;
 	tmp = x;
-	//tmp.real((double) x);
-	// tmp.imag((double) x);
 	mvec3[i] = tmp;
 	i++;
 
-	// cout << "Input = " << x << endl; 
 	}
-	// cout << "Sucessfully imported data from party 3" << endl;
 	inFile.close();
 
 
@@ -492,13 +447,8 @@ void TestScheme::testEncrypt(long logq, long logp, long logn,string round,string
 	while (inFile >> x) {
 	double tmp;
 	tmp = x;
-	//complex<double> tmp;
-	//tmp.real((double) x);
-	// tmp.imag((double) x);
 	mvec4[i] = tmp;
 	i++;
-	// cout << "Sucessfully imported data from party 4" << endl;
-	// cout << "Input = " << x << endl; 
 	}
 
 	inFile.close();
@@ -515,15 +465,10 @@ void TestScheme::testEncrypt(long logq, long logp, long logn,string round,string
 	while (inFile >> x) {
 	double tmp;
 	tmp = x;	
-	// complex<double> tmp;
-	// tmp.real((double) x);
-	// tmp.imag((double) x);
 	mvec5[i] = tmp;
 	i++;
 
-	// cout << "Input = " << x << endl; 
 	}
-	// cout << "Sucessfully imported data from party 5" << endl;
 	inFile.close();
 
 
@@ -538,15 +483,10 @@ void TestScheme::testEncrypt(long logq, long logp, long logn,string round,string
 	while (inFile >> x) {
 	double tmp;
 	tmp = x;
-	//complex<double> tmp;
-	//tmp.real((double) x);
-	// tmp.imag((double) x);
 	mvec6[i] = tmp;
 	i++;
 
-	// cout << "Input = " << x << endl; 
 	}
-	// cout << "Sucessfully imported data from party 6" << endl;
 	inFile.close();
 
 
@@ -561,15 +501,10 @@ void TestScheme::testEncrypt(long logq, long logp, long logn,string round,string
 	while (inFile >> x) {
 	double tmp;
 	tmp = x;
-	//complex<double> tmp;
-	//tmp.real((double) x);
-	// tmp.imag((double) x);
 	mvec7[i] = tmp;
 	i++;
 
-	// cout << "Input = " << x << endl; 
 	}
-	// cout << "Sucessfully imported data from party 7" << endl;
 	inFile.close();
 
 
@@ -584,13 +519,8 @@ void TestScheme::testEncrypt(long logq, long logp, long logn,string round,string
 	while (inFile >> x) {
 	double tmp;
 	tmp = x;
-	//complex<double> tmp;
-	//tmp.real((double) x);
-	// tmp.imag((double) x);
 	mvec8[i] = tmp;
 	i++;
-	// cout << "Sucessfully imported data from party 8" << endl;
-	// cout << "Input = " << x << endl; 
 	}
 	inFile.close();
 
@@ -606,13 +536,8 @@ void TestScheme::testEncrypt(long logq, long logp, long logn,string round,string
 	while (inFile >> x) {
 	double tmp;
 	tmp = x;
-	//complex<double> tmp;
-	//tmp.real((double) x);
-	// tmp.imag((double) x);
 	mvec9[i] = tmp;
 	i++;
-	// cout << "Sucessfully imported data from party 9" << endl;
-	// cout << "Input = " << x << endl; 
 	}
 	inFile.close();
 
@@ -975,15 +900,6 @@ void TestScheme::testEncryptSingle(long logq, long logp) {
 
 	cout << "!!! END TEST ENCRYPT SINGLE !!!" << endl;
 
-	//cout << cipher.ax;
-	//cout << "-----------" << endl;
-	//cout << cipher.bx;
-	//cout << "-----------" << endl;
-	//cout << "-----------" << endl;
-
-	//cout << cipher.ax[0];
-	//cout << "-----------" << endl;
-	//cout << cipher.bx[0];
 	cout << sizeof(cipher)<< endl;
 	cout << sizeof(cipher.ax)<< endl;
 	cout << sizeof(cipher.bx)<< endl;

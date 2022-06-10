@@ -1,4 +1,6 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+make: *** No rule to make target 'all'.  Stop.
+
 # GNU Make 4.2.1
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2016 Free Software Foundation, Inc.
@@ -6,7 +8,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Tue May 31 00:20:26 2022
+# Make data base, printed on Fri Jun 10 21:41:36 2022
 
 # Variables
 
@@ -47,7 +49,7 @@ VTE_VERSION = 6003
 # environment
 VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
 # environment
-JOURNAL_STREAM = 8:54276
+JOURNAL_STREAM = 8:54760
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # makefile
@@ -56,6 +58,8 @@ MAKEFILE_LIST :=
 @F = $(notdir $@)
 # environment
 IM_CONFIG_PHASE = 1
+# environment
+QT_IM_MODULE = ibus
 # environment
 USERNAME = adel
 # environment
@@ -69,7 +73,7 @@ VSCODE_VERBOSE_LOGGING = true
 # environment
 _ = /usr/bin/code
 # environment
-MANAGERPID = 1864
+MANAGERPID = 1919
 # environment
 LESSOPEN = | /usr/bin/lesspipe %s
 # environment
@@ -79,11 +83,11 @@ VSCODE_CWD = /home/adel
 # default
 MAKE_HOST := x86_64-pc-linux-gnu
 # environment
-PATH = /home/adel/anaconda3/condabin:/home/adel/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+NO_PROXY = 
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/boss-ubuntu20-04:@/tmp/.ICE-unix/2086,unix/boss-ubuntu20-04:/tmp/.ICE-unix/2086
+SESSION_MANAGER = local/boss-ubuntu20-04:@/tmp/.ICE-unix/2135,unix/boss-ubuntu20-04:/tmp/.ICE-unix/2135
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -91,9 +95,9 @@ XDG_MENU_PREFIX = gnome-
 # environment
 VSCODE_LOG_STACK = false
 # environment
-ELECTRON_RUN_AS_NODE = 1
+all_proxy = socks://127.0.0.1:7891/
 # environment
-INVOCATION_ID = a35a468d93a043689a7bb75bf5c46ba9
+INVOCATION_ID = eca09884c95b4d189a4b690e38455417
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -105,9 +109,11 @@ SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # automatic
 %F = $(notdir $%)
 # environment
-DISPLAY = :0
+HTTPS_PROXY = http://127.0.0.1:7890/
 # environment
 CONDA_EXE = /home/adel/anaconda3/bin/conda
+# environment
+no_proxy = 
 # environment
 VSCODE_PIPE_LOGGING = true
 # environment
@@ -115,7 +121,7 @@ PWD = /home/adel/xMKCKKS
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 2048
+SSH_AGENT_PID = 2097
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # environment
@@ -129,7 +135,7 @@ LESSCLOSE = /usr/bin/lesspipe %s %s
 # environment
 VSCODE_CLI = 1
 # environment
-VSCODE_CODE_CACHE_PATH = /home/adel/.config/Code/CachedData/c3511e6c69bb39013c4a4b7b9566ec1ca73fc4d5
+VSCODE_CODE_CACHE_PATH = /home/adel/.config/Code/CachedData/4af164ea3a06f701fe3e89a2bcbb421d2026b68f
 # environment
 LOGNAME = adel
 # environment
@@ -153,13 +159,13 @@ MAKE = $(MAKE_COMMAND)
 # default
 MAKECMDGOALS := all
 # environment
-QT_IM_MODULE = ibus
+PATH = /home/adel/anaconda3/condabin:/home/adel/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 # environment
 SHLVL = 1
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-ddaa0a8d-f726-4794-8528-2b0146021359.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-3b0d3728-bb6d-40af-84e2-c1a00300e9c9.sock
 # default
 MAKE_VERSION := 4.2.1
 # environment
@@ -183,7 +189,7 @@ MAKE_COMMAND := make
 # automatic
 *F = $(notdir $*)
 # environment
-VSCODE_IPC_HOOK = /run/user/1000/vscode-d82c17a2-1.67.2-main.sock
+VSCODE_IPC_HOOK = /run/user/1000/vscode-d82c17a2-1.68.0-main.sock
 # makefile
 MAKEFLAGS = pqrR
 # environment
@@ -197,7 +203,13 @@ GDK_BACKEND = x11
 # environment
 LC_PAPER = en_US.UTF-8
 # environment
+HTTP_PROXY = http://127.0.0.1:7890/
+# environment
+LC_IDENTIFICATION = en_US.UTF-8
+# environment
 QT_ACCESSIBILITY = 1
+# environment
+DISPLAY = :0
 # default
 MAKEFILES := 
 # environment
@@ -205,17 +217,23 @@ LC_NUMERIC = en_US.UTF-8
 # automatic
 <F = $(notdir $<)
 # environment
+https_proxy = http://127.0.0.1:7890/
+# environment
+ELECTRON_RUN_AS_NODE = 1
+# environment
 LC_MEASUREMENT = en_US.UTF-8
 # environment
 LC_ALL = C
 # environment
 CONDA_PYTHON_EXE = /home/adel/anaconda3/bin/python
 # environment
-GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/ffcd1534_285f_46cb_8e5d_4637bcc21e6e
+GJS_DEBUG_TOPICS = JS ERROR;JS LOG
+# environment
+GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/cb635638_20f3_47b2_8133_315145e94b6f
 # automatic
 ^F = $(notdir $^)
 # environment
-GNOME_TERMINAL_SERVICE = :1.77
+GNOME_TERMINAL_SERVICE = :1.83
 # default
 SUFFIXES := 
 # environment
@@ -227,9 +245,13 @@ WINDOWPATH = 2
 # default
 .INCLUDE_DIRS = /usr/include /usr/local/include /usr/include
 # environment
-LC_IDENTIFICATION = en_US.UTF-8
+GJS_DEBUG_OUTPUT = stderr
+# environment
+ALL_PROXY = socks://127.0.0.1:7891/
 # default
 .RECIPEPREFIX := 
+# environment
+http_proxy = http://127.0.0.1:7890/
 # environment
 LC_ADDRESS = en_US.UTF-8
 # environment
@@ -237,11 +259,11 @@ LANG = C
 # environment
 TERM = xterm-256color
 # environment
-VSCODE_PID = 2461
+VSCODE_PID = 24431
 # environment
 _CE_CONDA = 
 # variable set hash-table stats:
-# Load=115/1024=11%, Rehash=0, Collisions=18/137=13%
+# Load=125/1024=12%, Rehash=0, Collisions=25/147=17%
 
 # Pattern-specific Variable Values
 
@@ -249,15 +271,16 @@ _CE_CONDA =
 
 # Directories
 
-# . (device 2070, inode 21892091): 13 files, no impossibilities.
+# . (device 2070, inode 21892091): 11 files, no impossibilities.
 
-# 13 files, no impossibilities in 1 directories.
+# 11 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
 # No implicit rules.
 
 # Files
+ 
 
 # Not a target:
 all:
@@ -277,9 +300,6 @@ Makefile:
 makefile:
 #  Implicit rule search has been done.
 #  File does not exist.
- 
-make: *** No rule to make target 'all'.  Stop.
-
 #  File has been updated.
 #  Failed to be updated.
 
@@ -304,12 +324,12 @@ GNUmakefile:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 21 / storage = 172 B / avg = 8 B
-# current buf: size = 8162 B / used = 172 B / count = 21 / avg = 8 B
+# strcache buffers: 1 (0) / strings = 19 / storage = 151 B / avg = 7 B
+# current buf: size = 8162 B / used = 151 B / count = 19 / avg = 7 B
 
-# strcache performance: lookups = 24 / hit rate = 12%
+# strcache performance: lookups = 22 / hit rate = 13%
 # hash-table stats:
-# Load=21/8192=0%, Rehash=0, Collisions=1/24=4%
-# Finished Make data base on Tue May 31 00:20:26 2022
+# Load=19/8192=0%, Rehash=0, Collisions=1/22=5%
+# Finished Make data base on Fri Jun 10 21:41:36 2022
 
  
