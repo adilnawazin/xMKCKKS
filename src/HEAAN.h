@@ -19,3 +19,5 @@
 #include "SerializationUtils.h"
 #include "TestScheme.h"
 #include "MKScheme.h"
+#include "server.h"
+#include "client.h"

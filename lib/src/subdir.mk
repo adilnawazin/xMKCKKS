@@ -18,7 +18,9 @@ CPP_SRCS += \
 ../src/SerializationUtils.cpp \
 ../src/StringUtils.cpp \
 ../src/TestScheme.cpp \
-../src/TimeUtils.cpp
+../src/TimeUtils.cpp \
+../src/client.cpp \
+../src/server.cpp 
 
 
 OBJS += \
@@ -36,7 +38,9 @@ OBJS += \
 ./src/SerializationUtils.o \
 ./src/StringUtils.o \
 ./src/TestScheme.o \
-./src/TimeUtils.o 
+./src/TimeUtils.o \
+./src/client.o \
+./src/server.o 
 
 
 CPP_DEPS += \
@@ -53,8 +57,10 @@ CPP_DEPS += \
 ./src/SecretKey.d \
 ./src/SerializationUtils.d \
 ./src/StringUtils.d \
-../src/TestScheme.d \
-./src/TimeUtils.d  
+./src/TestScheme.d \
+./src/TimeUtils.d \
+./src/client.d \
+./src/server.d   
 
 
 # Each subdirectory must supply rules for building sources it contributes

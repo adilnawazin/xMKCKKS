@@ -1,14 +1,13 @@
-#include<string>  
-#include<cstring>
+#include <iostream>
+#include <cstring>
+#include <arpa/inet.h>
+#include <unistd.h>
+#include <errno.h>
+#include <string>  
 #include "../src/HEAAN.h"
 #include "NTL/ZZ.h"
 
 using namespace std;
-
-// string numberToString(ZZ* axP)
-// {
-//     char str[];
-// }
 
 
 int main(int argc, char **argv) {
@@ -57,43 +56,6 @@ int main(int argc, char **argv) {
 	i++;
 	}
 	inFile.close();
-	// cout << "Value of vector = " << *mvec << endl;
-	// cout<< "successfully imported data from party 0" << endl;
-
-	double* mvec1 = EvaluatorUtils::randomRealArray(n);
-	inFile.open("/home/adel/heaan_test/doc_T1_"+round+"_"+trial+".txt");
-	i=0;
-	if (!inFile) {
-	cout << "Unable to open file doc_T1_"+round+"_"+trial<<endl;
-	exit(1);
-	}
-	while (inFile >> x) {
-	double tmp;
-	tmp = x;
-	mvec1[i] = tmp;
-	i++;
-	}
-	inFile.close();
-	// cout << "Value of vector = " << *mvec << endl;
-	// cout<< "successfully imported data from party 0" << endl;
-
-	double* mvec2 = EvaluatorUtils::randomRealArray(n);
-	inFile.open("/home/adel/heaan_test/doc_T2_"+round+"_"+trial+".txt");
-	i=0;
-	if (!inFile) {
-	cout << "Unable to open file doc_T2_"+round+"_"+trial<<endl;
-	exit(1);
-	}
-	while (inFile >> x) {
-	double tmp;
-	tmp = x;
-	mvec2[i] = tmp;
-	i++;
-	}
-	inFile.close();
-	// cout << "Value of vector = " << *mvec << endl;
-	// cout<< "successfully imported data from party 0" << endl;
-	timeutils.stop("Data Import Complete");
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 //					Encode Data (msg(vector) --> plaintext)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
@@ -105,40 +67,38 @@ int main(int argc, char **argv) {
 	Plaintext plain;
 	MKScheme scheme(secretKey, ring);
 	scheme.encode(plain, mvec, n, logp, logq);
-
-	SecretKey secretKey1(ring);
-	Plaintext plain1;
-	MKScheme scheme1(secretKey1, ring);
-	scheme1.encode(plain1, mvec1, n, logp, logq);
-
-	SecretKey secretKey2(ring);
-	Plaintext plain2;
-	MKScheme scheme2(secretKey2, ring);
-	scheme2.encode(plain2, mvec2, n, logp, logq);
-	timeutils.stop("Encoding");
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //		Publickey Gen (Each User generates its PK i.e. (b = -s.a+e))
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-	timeutils.start("Public Key Generation");
 	ZZ* axP = new ZZ[N];
 	ring.sampleUniform2(axP, logQQ);
-	cout << "ZZ axP = " << *axP << endl;
-	ostringstream oOStrStream;
- 	oOStrStream << *axP;
-	cout << "stream of ZZ is "<< oOStrStream.str() << endl;
-	cout << "sizeof stream = " << sizeof(oOStrStream)<< endl;
+    // send axP to all parties
+    //
+    //
+    //
+    // 
+    // 
+    // 
 	ZZ* pkey = scheme.PublicKeyGeneration(secretKey, axP);
-	ZZ* pkey1 = scheme.PublicKeyGeneration(secretKey1, axP);
-	ZZ* pkey2 = scheme.PublicKeyGeneration(secretKey2, axP);
-	timeutils.stop("Public Key Generation");
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //		Joint Public Key Generation at Server (b' = b1+b2+...+bn, e)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	
-	timeutils.start("Joint Key Generation");
-	Key* jkey= scheme.JointKeyGeneration(axP ,pkey, pkey1, pkey2);
-	timeutils.stop("Joint Key Generation");
+    // Receive Key from Nodes 
+    //pkey1
+    //pkey2
+    //
+    //
+    //
+    //
+    Key* jkey= scheme.JointKeyGeneration(axP ,pkey, pkey1, pkey2);
+
+    //Send Joint Key to the Nodes
+    //
+    //
+    //
+    //
+    //
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //		Encryption at Device D(cipher = (v.b' + m + e) , (v.a + e))
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -147,66 +107,51 @@ int main(int argc, char **argv) {
 	Ciphertext cipher;
 	scheme.EncryptMsg(cipher, plain, jkey);
 
-	Ciphertext cipher1;
-	scheme1.EncryptMsg(cipher1, plain1, jkey);
-
-	Ciphertext cipher2;
-	scheme2.EncryptMsg(cipher2, plain2, jkey);
-	timeutils.stop("Encryption");
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // 		Cipher Add(C_Sum0, C_sum1 = SUM(v.b' + m + e), SUM(v.a + e))
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-	timeutils.start("Ciphertext Addition");
-	Ciphertext cipherAdd;
+	//Receive CipherText from the devices
+    //cipher1
+    //cipher2
+    //
+    //
+    Ciphertext cipherAdd;
 	scheme.AddCipherText(cipherAdd, cipher, cipher1, cipher2);
-	timeutils.stop("Ciphertext Addition");
+
+    //Send CipherAdd to devices
+    //
+    //
+    //
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // 		Part Dec (D_i = s.C_sum1)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-	timeutils.start("Decryption Share");
 	Plaintext plain_t;
 	scheme.DecryptionShare(plain_t, cipher, secretKey, cipherAdd.ax);
-	// cout<<"-----"<<*plain_t.mx<<endl;
-	// complex<double>* dec1 = scheme.decode(plain_t);
-	// StringUtils::showVec_RP(dec1,10);
-
-	Plaintext plain_t1;
-	scheme1.DecryptionShare(plain_t1, cipher1, secretKey1, cipherAdd.ax);
-	// cout<<"-----"<<*plain_t1.mx<<endl;
-
-	Plaintext plain_t2;
-	scheme2.DecryptionShare(plain_t2, cipher2, secretKey2, cipherAdd.ax);
-	// cout<<"-----"<<*plain_t2.mx<<endl;	
-	timeutils.stop("Decryption Share");
+    // Receive Partial Decryption Shares from other devices
+    // plain_t1 = recv(pt1);
+    // plain_t2 = recv(pt2);
+    //
+    //
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //		 Merge Decryption (m = C_sum0 + SUM(D_i) + e)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-	timeutils.start("Merge Decryption and Decode");
 	scheme.Decryption(plain_t, cipherAdd, plain_t1, plain_t2);
 	complex<double>* res=scheme.decode(plain_t);
-	timeutils.stop("Merge Decryption and Decode");
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 // Compare Results
-	double* madd = new double[n];
-
-	for(long i = 0; i < n; i++) {
-		madd[i] = mvec[i] + mvec1[i] + mvec2[i];
-	}
-	cout<< "========================="<<endl;
-	cout<< "G Truth : ";
-	StringUtils::showVec(madd,19);
-	cout << "========================"<<endl;
-
-	cout<<"Output  : ";
-	StringUtils::showVec_RP(res,19);
-	StringUtils::compare(madd,res,n,"Add");
-	// int vec= stoi(vector_size);
-	// StringUtils::output(res,vec);
-	//end of decryption
+// 	double* madd = new double[n];
+// 	for(long i = 0; i < n; i++) {
+// 		madd[i] = mvec[i] + mvec1[i] + mvec2[i];
+// 	}
+// 	cout<< "========================="<<endl;
+// 	cout<< "G Truth : ";
+// 	StringUtils::showVec(madd,19);
+// 	cout << "========================"<<endl;
+// 	cout<<"Output  : ";
+// 	StringUtils::showVec_RP(res,19);
+// 	StringUtils::compare(madd,res,n,"Add");
 }
 	return 0;
 

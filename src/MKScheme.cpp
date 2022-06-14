@@ -2,11 +2,7 @@
 #include "MKScheme.h"
 #include <NTL/BasicThreadPool.h>
 #include <NTL/ZZ.h>
-#include "Ciphertext.h"
 #include "EvaluatorUtils.h"
-#include "Ring.h"
-#include "SecretKey.h"
-#include "SerializationUtils.h"
 
 
 MKScheme::MKScheme(SecretKey& secretKey, Ring& ring, bool isSerialized) : ring(ring), isSerialized(isSerialized) {};
@@ -71,8 +67,7 @@ Key* MKScheme::JointKeyGeneration( ZZ* axP, ZZ* bxP, ZZ* bxP1, ZZ* bxP2) {
 	Key* keySum = new Key();
 	ring.CRT(keySum->rax, axP, nprimes);
 	ring.CRT(keySum->rbx, bxSum, nprimes);
-	// delete[] axP;
-	
+	delete[] bxSum;
 	return keySum;
 }
 
@@ -107,10 +102,9 @@ void MKScheme::AddCipherText(Ciphertext& cipherAdd, Ciphertext& cipher, Cipherte
 	ring.add(cipherAdd.bx, cipherAdd.bx, cipher2.bx, q);
 }
 
-void MKScheme::DecryptionShare(Plaintext& plain_t, Ciphertext& cipher, SecretKey& secretKey, Ciphertext& cipherAdd){
+void MKScheme::DecryptionShare(Plaintext& plain_t, Ciphertext& cipher, SecretKey& secretKey, ZZ* cipherAdd){
 
 	SetNumThreads(8);
-	ZZ* sx = new ZZ[N];
 	ZZ qQ = ring.qpows[plain_t.logq + logQ];
 	double _sigma = 19.0;
 	ZZ q = ring.qpows[cipher.logq];
@@ -118,9 +112,8 @@ void MKScheme::DecryptionShare(Plaintext& plain_t, Ciphertext& cipher, SecretKey
 	plain_t.logq = cipher.logq;
 	plain_t.n = cipher.n;
 	long np = ceil((1 + cipher.logq + logN + 2)/(double)pbnd);
-	ring.mult(plain_t.mx, cipherAdd.ax, secretKey.sx, np, q);
+	ring.mult(plain_t.mx, cipherAdd, secretKey.sx, np, q);
 	ring.addGaussAndEqual(plain_t.mx, qQ, _sigma);
-	delete[] sx;
 }
 
 void MKScheme::Decryption(Plaintext& plain_t, Ciphertext& cipherAdd, Plaintext& plain_t1, Plaintext& plain_t2){

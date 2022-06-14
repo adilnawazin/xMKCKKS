@@ -40,7 +40,7 @@ public:
 
 	void AddCipherText(Ciphertext& cipherAdd, Ciphertext& cipher, Ciphertext& cipher1, Ciphertext& cipher2);
 
-	void DecryptionShare(Plaintext& plain_t, Ciphertext& cipher, SecretKey& secretKey, Ciphertext& cipherAdd);
+	void DecryptionShare(Plaintext& plain_t, Ciphertext& cipher, SecretKey& secretKey, ZZ* cipherAdd);
 
 	void Decryption(Plaintext& plain_t, Ciphertext& cipherAdd, Plaintext& plain_t1, Plaintext& plain_t2);
     

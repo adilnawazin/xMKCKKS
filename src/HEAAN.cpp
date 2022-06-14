@@ -17,7 +17,7 @@ int main() {
 
 
 	TestScheme::testEncrypt(1200, 30, 4);
-	MKScheme:: Encode(1200,30,4)
+//	MKScheme:: encode(1200,30,4)
 //	TestScheme::testEncryptSingle(300, 30);
 //	TestScheme::testAdd(1200, 30, 4);
 //	TestScheme::testMult(1200, 30, 4);
