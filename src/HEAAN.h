@@ -21,3 +21,5 @@
 #include "MKScheme.h"
 #include "server.h"
 #include "client.h"
+#include "MKScheme_server.h"
+#include "MKScheme_client.h"

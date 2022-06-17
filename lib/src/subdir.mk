@@ -20,7 +20,9 @@ CPP_SRCS += \
 ../src/TestScheme.cpp \
 ../src/TimeUtils.cpp \
 ../src/client.cpp \
-../src/server.cpp 
+../src/server.cpp \
+../src/MKScheme_server.cpp \
+../src/MKScheme_client.cpp
 
 
 OBJS += \
@@ -40,7 +42,9 @@ OBJS += \
 ./src/TestScheme.o \
 ./src/TimeUtils.o \
 ./src/client.o \
-./src/server.o 
+./src/server.o \
+./src/MKScheme_server.o \
+./src/MKScheme_client.o
 
 
 CPP_DEPS += \
@@ -60,7 +64,9 @@ CPP_DEPS += \
 ./src/TestScheme.d \
 ./src/TimeUtils.d \
 ./src/client.d \
-./src/server.d   
+./src/server.d \
+./src/MKScheme_server.d \
+./src/MKScheme_client.d  
 
 
 # Each subdirectory must supply rules for building sources it contributes

@@ -7,7 +7,7 @@
 */
 #ifndef HEAAN_PARAMS_H_
 #define HEAAN_PARAMS_H_
-
+#include <iostream>
 #include <NTL/ZZ.h>
 using namespace NTL;
 

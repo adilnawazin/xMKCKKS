@@ -22,8 +22,8 @@ class server
         server();
         virtual ~server();
         static int estab_conn();
-        static void tcp_recv(int clientsocket, char* buffer);
-        static void tcp_send(int client_socket, char* buffer);
+        static int tcp_recv(int clientsocket, char* buffer);
+        static int tcp_send(int client_socket, char* buffer);
 
     protected:
 

@@ -31,23 +31,33 @@ void TimeUtils::stop(string msg) {
 		cout<<"Timerec File not found"<<endl;
 	}
 	else{
-		if (msg == "Data Import Complete"){
+		if (msg == "Data Import"){
 		timerec << "data_import_time ";
 		timerec << timeElapsed;
 		timerec << "\n";
 		}
-		else if (msg == "Encoding"){
+		else if (msg == "Encode"){
 			timerec << "encode_time ";
 			timerec << timeElapsed;
 			timerec << "\n"; 
 		}
-		else if (msg == "Public Key Generation"){
-			timerec << "pKey_Gen_time ";
+		else if (msg == "Send AXP to Users"){
+			timerec << "send_axp_time ";
 			timerec << timeElapsed;
 			timerec << "\n"; 
 		}
-			else if (msg == "Joint Key Generation"){
-			timerec << "Keysum ";
+			else if (msg == "Receive Key from Users"){
+			timerec << "recv_pkey_time ";
+			timerec << timeElapsed;
+			timerec << "\n"; 
+		}
+			else if (msg == "Send Joint Key to Users"){
+			timerec << "send_jkey_time ";
+			timerec << timeElapsed;
+			timerec << "\n"; 
+		}
+			else if (msg == "Receive CipherText from the Users"){
+			timerec << "recv_ctext_time ";
 			timerec << timeElapsed;
 			timerec << "\n"; 
 		}
@@ -56,25 +66,56 @@ void TimeUtils::stop(string msg) {
 			timerec << timeElapsed;
 			timerec << "\n"; 
 		}
-			else if (msg == "Ciphertext Addition"){
-			timerec << "ct_add_time ";
+			else if (msg == "CipherAdd to devices"){
+			timerec << "send_ct_add_time ";
 			timerec << timeElapsed;
 			timerec << "\n"; 
 		}
-			else if (msg == "Decryption Share"){
-			timerec << "dec_share_time ";
+			else if (msg == "Receive Partial Decryption Share from Users"){
+			timerec << "recv_dec_share_time ";
 			timerec << timeElapsed;
 			timerec << "\n"; 
 		}
-			else if (msg == "Merge Decryption and Decode"){
-			timerec << "merge_n_decode_time ";
+			else if (msg == "Receive AXP from Server"){
+			timerec << "recv_axp_time ";
 			timerec << timeElapsed;
-			timerec << "\n";
-			}
+			timerec << "\n"; 
+		}		
+			else if (msg == "Send Key to server"){
+			timerec << "send_pkey_time ";
+			timerec << timeElapsed;
+			timerec << "\n"; 
+		}		
+			else if (msg == "Receive Joint Key from server"){
+			timerec << "recv_jkey_time ";
+			timerec << timeElapsed;
+			timerec << "\n"; 
+		}	
+			else if (msg == "Send Ciphertext to Server"){
+			timerec << "send_ct_time ";
+			timerec << timeElapsed;
+			timerec << "\n"; 
+		}	
+			else if (msg == "Receive CipherAdd from server"){
+			timerec << "recv_ctadd_time ";
+			timerec << timeElapsed;
+			timerec << "\n"; 
+		}
+			else if (msg == "Send Partial Decryption Share to server"){
+			timerec << "send_partdec_time ";
+			timerec << timeElapsed;
+			timerec << "\n"; 
+		}
+			else if (msg == "Send Decryption Share to client"){
+			timerec << "send_dec_time ";
+			timerec << timeElapsed;
+			timerec << "\n"; 
+		}	
+		
 			else{
 			std::cout<< "Key Error: msg cannot be saved in timerec"<<std::endl;
-			} 
 		}
+	}
 	timerec.close();
 	std::cout<< msg +  " Time = "<< timeElapsed << " ms" << std::endl;
 	std::cout<< "------------------------------------" << std::endl;

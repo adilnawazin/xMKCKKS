@@ -23,7 +23,6 @@ int server::estab_conn()
     if (bind(listening, (sockaddr*)&hint, sizeof(hint)) == -1)
     {
         cerr << "can't bind to address and port" << endl;
-        return errno;
     }
     listen(listening, SOMAXCONN);
     sockaddr_in client;
@@ -32,51 +31,43 @@ int server::estab_conn()
     if (clientsocket == -1)
     {
         cerr << "client could not connect" << endl;
-        return errno;
     }
-    close(listening);
     char host[NI_MAXHOST];
     char svc[NI_MAXSERV];
     memset(host, 0, NI_MAXHOST);
     memset(svc, 0, NI_MAXSERV);
+    if (getnameinfo((sockaddr*)&client, sizeof(client), host, NI_MAXHOST, svc, NI_MAXSERV, 0) == 0)
+    {
+        cout << host << " connected on port " << svc << endl;
+    }
+    else
+    {
+        inet_ntop(AF_INET, &client.sin_addr, host, NI_MAXHOST);
+        cout << host << " connected on port " << ntohs(client.sin_port) << endl;
+    }
+    close(listening);
     return clientsocket;
 }
 
-void server::tcp_recv(int clientsocket, char* buffer)
+int server::tcp_recv(int clientsocket, char* buffer)
 {
-    while(1)
-    {
 
-        memset(buffer , 0 , 4096);
-        int bytesrcvd = recv(clientsocket, buffer, 4096, 0);
+
+        int bytesrcvd = recv(clientsocket, buffer, 512, MSG_WAITALL);
         if (bytesrcvd == -1)
         {
-            cerr << "Connection Error : Exiting";
-            break;
+            server server;
+            server.tcp_recv(clientsocket, buffer);
         }
         if (bytesrcvd == 0)
         {
             cout << "Client has closed the connection" << endl;
-            break;
         }
-        string str(buffer);
-        ZZ* x = new ZZ;
-        *x = conv<ZZ>(buffer);
-        cout << sizeof(x) << endl;
-        cout << *x << endl;
-    }
+        return bytesrcvd;
 }
-void server::tcp_send(int client_socket, char* buffer)
+int server::tcp_send(int client_socket, char* buffer)
 {
-    // ostringstream msgstream;
-	//msgstream << *message;
-	//char buffer[sizeof(stream)+1];	//as 1 char space for null is also required
-	//strcpy(buffer, stream.str().c_str());
-	int bytesend = send(client_socket, buffer , 4096, 0);
-
-	if (bytesend == -1)
-	{
-		cout << "Could not send to server! Whoops!\r\n";
-		return;
-	}
+    // ostringstream stream.str().c_str());
+	int bytesend = send(client_socket, buffer ,512, MSG_WAITALL);
+    return bytesend;
 }

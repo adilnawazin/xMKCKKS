@@ -57,9 +57,9 @@ public:
 
 	static void compare(complex<double> val1, complex<double>* vals2, long size, string prefix);
 
-
-
 	static void output(complex<double>* vals2, long size);
+
+	static void progressbar(float progress);
 
 };
 

@@ -2,6 +2,7 @@
 #include<cstring>
 #include "../src/HEAAN.h"
 #include "NTL/ZZ.h"
+#include <sstream>
 
 using namespace std;
 
@@ -99,7 +100,7 @@ int main(int argc, char **argv) {
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 
 	timeutils.start("Encode");
-	SetNumThreads(8);
+	// SetNumThreads(8);
 	Ring ring;
 	SecretKey secretKey(ring);
 	Plaintext plain;
@@ -121,16 +122,27 @@ int main(int argc, char **argv) {
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	timeutils.start("Public Key Generation");
-	ZZ* axP = new ZZ[N];
-	ring.sampleUniform2(axP, logQQ);
-	cout << "ZZ axP = " << *axP << endl;
-	ostringstream oOStrStream;
- 	oOStrStream << *axP;
-	cout << "stream of ZZ is "<< oOStrStream.str() << endl;
-	cout << "sizeof stream = " << sizeof(oOStrStream)<< endl;
-	ZZ* pkey = scheme.PublicKeyGeneration(secretKey, axP);
-	ZZ* pkey1 = scheme.PublicKeyGeneration(secretKey1, axP);
-	ZZ* pkey2 = scheme.PublicKeyGeneration(secretKey2, axP);
+	ZZ* axP = new ZZ[N];										// Pointer to a
+	ring.sampleUniform2(axP, logQQ);							//Generate value for a
+	// cout << "orgnl axP: "<< axP[1] << endl;						// print a
+	// cout << "\n" << endl;
+	ZZ* axP1  = new ZZ[N];										// initialize a pointer on remote machine for a
+	stringstream stream;										// buffer for data (recv, send)
+	for (i= 0; i<N; i++)
+	{
+	stream = stringstream();									// clear buffer
+    stream << axP[i];											// copy a[i] to buffer
+	axP1[i] = conv<ZZ>(stream.str().c_str()); 					// convert and assign received a[i]	
+	}	
+	ZZ* pkey = scheme.PublicKeyGeneration(secretKey, axP);		// Generate key on server using a
+	// cout <<"Encryption Key for server: " <<*pkey << endl;		// Print server's encryption key
+	// cout << "\n" << endl;
+	ZZ* pkey1 = scheme.PublicKeyGeneration(secretKey1, axP1);	// Generate Key on user using a (that was converted to char and back)
+	// cout <<"Encryption Key for User-A: " << *pkey1<< endl;		// Print user-A encryption key
+	// cout << "\n" << endl;
+	ZZ* pkey2 = scheme.PublicKeyGeneration(secretKey2, axP);	//Generate key on another user 
+		// cout <<"Encryption Key for User-B: " << *pkey2<< endl;		// Print user-B encryption key
+		// cout << "\n" << endl;
 	timeutils.stop("Public Key Generation");
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //		Joint Public Key Generation at Server (b' = b1+b2+...+bn, e)
@@ -138,6 +150,10 @@ int main(int argc, char **argv) {
 	
 	timeutils.start("Joint Key Generation");
 	Key* jkey= scheme.JointKeyGeneration(axP ,pkey, pkey1, pkey2);
+	// uint64_t* rax = new uint64_t;
+	// cout << "jkey -> rax = " << jkey->rax<<endl;
+	// cout << "*(jkey ->rax) = " << *(jkey->rax)<< endl;
+	// cout << "*(rax) = jkey->rax"<< *rax << endl; 
 	timeutils.stop("Joint Key Generation");
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //		Encryption at Device D(cipher = (v.b' + m + e) , (v.a + e))
@@ -146,9 +162,17 @@ int main(int argc, char **argv) {
 	timeutils.start("Encryption");
 	Ciphertext cipher;
 	scheme.EncryptMsg(cipher, plain, jkey);
-
+	
 	Ciphertext cipher1;
 	scheme1.EncryptMsg(cipher1, plain1, jkey);
+	// Ciphertext ciphertest;
+	// ciphertest.ax = cipher1.ax;
+	// ciphertest.bx = cipher1.bx;
+	// for(i=0;i<N;i++)
+	// {
+	// cout<< "ciphertest.ax["<<i<<"]: "<<ciphertest.ax[i]<<endl;
+	// cout<< "ciphertest.bx["<<i<<"]: "<<ciphertest.bx[i]<<endl;
+	// }
 
 	Ciphertext cipher2;
 	scheme2.EncryptMsg(cipher2, plain2, jkey);
