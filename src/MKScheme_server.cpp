@@ -3,6 +3,8 @@
 #include <NTL/BasicThreadPool.h>
 #include <NTL/ZZ.h>
 #include "EvaluatorUtils.h"
+#include "server.h"
+#include <sstream>
 
 
 MKScheme_server::MKScheme_server(SecretKey& secretKey, Ring& ring, bool isSerialized) : ring(ring), isSerialized(isSerialized) {};
@@ -57,12 +59,13 @@ ZZ* MKScheme_server::PublicKeyGeneration(SecretKey& EncKey, ZZ* axP){
 	return bxP;
 }
 
-ZZ* MKScheme_server::Jkeysend(ZZ* axP, ZZ* bxP, ZZ* bxP1)
+ZZ* MKScheme_server::Jkeysend(ZZ* axP, ZZ* bxP, ZZ* bxP1, ZZ* bxP2)
 {
 	SetNumThreads(8);
 	ZZ* bxSum = new ZZ[N];
 	ring.addAndEqual(bxSum, bxP, QQ);
 	ring.addAndEqual(bxSum, bxP1, QQ);
+	ring.addAndEqual(bxSum, bxP2, QQ);
 	return bxSum;
 }
 Key* MKScheme_server::JointKeyGeneration( ZZ* axP, ZZ* bxSum) {
@@ -93,15 +96,15 @@ void MKScheme_server::EncryptMsg(Ciphertext& cipher, Plaintext& plain, Key* join
 	delete[] vx;
 }
 
-void MKScheme_server::AddCipherText(Ciphertext& cipherAdd, Ciphertext& cipher, Ciphertext& cipher1){
+void MKScheme_server::AddCipherText(Ciphertext& cipherAdd, Ciphertext& cipher, Ciphertext& cipher1, Ciphertext& cipher2){
 	
 	SetNumThreads(8);
 	ZZ q = ring.qpows[cipher.logq];
 	cipherAdd.copyParams(cipher);
 	ring.add(cipherAdd.ax, cipher.ax, cipher1.ax, q);
 	ring.add(cipherAdd.bx, cipher.bx, cipher1.bx, q);
-	// ring.add(cipherAdd.ax, cipherAdd.ax, cipher2.ax, q);
-	// ring.add(cipherAdd.bx, cipherAdd.bx, cipher2.bx, q);
+	ring.add(cipherAdd.ax, cipherAdd.ax, cipher2.ax, q);
+	ring.add(cipherAdd.bx, cipherAdd.bx, cipher2.bx, q);
 }
 
 void MKScheme_server::DecryptionShare(Plaintext& plain_t, Ciphertext& cipher, SecretKey& secretKey, ZZ* cipherAdd){
@@ -118,14 +121,42 @@ void MKScheme_server::DecryptionShare(Plaintext& plain_t, Ciphertext& cipher, Se
 	ring.addGaussAndEqual(plain_t.mx, qQ, _sigma);
 }
 
-void MKScheme_server::Decryption(Plaintext& plain_t, Ciphertext& cipherAdd, Plaintext& plain_t1){
+void MKScheme_server::Decryption(Plaintext& plain_t, Ciphertext& cipherAdd, Plaintext& plain_t1, Plaintext& plain_t2){
 
 	SetNumThreads(8);
 // Add (mu = D1+D2+...+Dn)
 	ZZ q = ring.qpows[cipherAdd.logq];
 	ring.addAndEqual(plain_t.mx, plain_t1.mx, q);
-	// ring.addAndEqual(plain_t.mx, plain_t2.mx, q);
+	ring.addAndEqual(plain_t.mx, plain_t2.mx, q);
 
 //ADD C_sum0 + mu
 	ring.addAndEqual(plain_t.mx, cipherAdd.bx, q);
+}
+
+void MKScheme_server::ZZ_Send(ZZ* send, int socket, string op){
+	char buffer[512];
+	stringstream stream;
+	float progress=0;
+	for (int i=0; i<N; i++){
+	memset(buffer,0,sizeof(buffer));
+    stream = stringstream();
+    stream << send[i];		
+    strcpy(buffer, stream.str().c_str());
+    server::tcp_send(socket, buffer);
+	progress = (float(i)/float(N))*100;
+	cout << "Sending " << op << "to device ........"<< progress << "%"<<"\t\r" <<flush;
+	}
+	cout<<"\n";     
+}
+void MKScheme_server::ZZ_Receive(ZZ* receive, int socket, string op){
+    char buffer[512];
+	float progress = 0;
+	for(int i=0;i<N;i++){
+	memset (buffer,0,sizeof(buffer));
+	server::tcp_recv(socket, buffer);
+    receive[i] = conv<ZZ>(buffer);
+    progress = (float(i)/float(N))*100;
+	cout << "Receiving " << op << "from device ........"<< progress << "%"<<"\t\r" <<flush;
+	}
+	cout<<"\n";
 }

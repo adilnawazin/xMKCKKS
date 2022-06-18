@@ -11,7 +11,6 @@
 #include <NTL/ZZ.h>
 
 
-#define PORT 8080
 using namespace std;
 using namespace NTL;
 
@@ -21,7 +20,7 @@ class server
     public:
         server();
         virtual ~server();
-        static int estab_conn();
+        static int estab_conn(int port);
         static int tcp_recv(int clientsocket, char* buffer);
         static int tcp_send(int client_socket, char* buffer);
 

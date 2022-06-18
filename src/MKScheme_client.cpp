@@ -3,6 +3,8 @@
 #include <NTL/BasicThreadPool.h>
 #include <NTL/ZZ.h>
 #include "EvaluatorUtils.h"
+#include "client.h"
+#include <sstream>
 
 
 MKScheme_client::MKScheme_client(SecretKey& secretKey, Ring& ring, bool isSerialized) : ring(ring), isSerialized(isSerialized) {};
@@ -128,4 +130,32 @@ void MKScheme_client::Decryption(Plaintext& plain_t, Ciphertext& cipherAdd, Plai
 
 //ADD C_sum0 + mu
 	ring.addAndEqual(plain_t.mx, cipherAdd.bx, q);
+}
+
+void MKScheme_client::ZZ_Send(ZZ* send, int socket, string op){
+	char buffer[512];
+	stringstream stream;
+	float progress=0;
+	for (int i=0; i<N; i++){
+	memset(buffer,0,sizeof(buffer));
+    stream = stringstream();
+    stream << send[i];		
+    strcpy(buffer, stream.str().c_str());
+    client::client_send(socket, buffer);
+	progress = (float(i)/float(N))*100;
+	cout << "Sending " << op << "to Server ........"<< progress << "%"<<"\t\r" <<flush;
+	}
+	cout<<"\n";     
+}
+void MKScheme_client::ZZ_Receive(ZZ* receive, int socket, string op){
+    char buffer[512];
+	float progress = 0;
+	for(int i=0;i<N;i++){
+	memset (buffer,0,sizeof(buffer));
+	client::client_receive(socket, buffer);
+    receive[i] = conv<ZZ>(buffer);
+    progress = (float(i)/float(N))*100;
+	cout << "Receiving " << op << "from Server ........"<< progress << "%"<<"\t\r" <<flush;
+	}
+	cout<<"\n";
 }

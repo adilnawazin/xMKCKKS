@@ -36,18 +36,21 @@ public:
 
 	ZZ* PublicKeyGeneration(SecretKey& EncKey, ZZ* axP);
 
-	ZZ* Jkeysend(ZZ* axP, ZZ* bxP, ZZ* bxP1);
+	ZZ* Jkeysend(ZZ* axP, ZZ* bxP, ZZ* bxP1, ZZ* bxP2);
 
 	Key* JointKeyGeneration(ZZ* axP, ZZ* bxSum);
 
 	void EncryptMsg(Ciphertext& cipher, Plaintext& plain, Key* jointkey);
 
-	void AddCipherText(Ciphertext& cipherAdd, Ciphertext& cipher, Ciphertext& cipher1);
+	void AddCipherText(Ciphertext& cipherAdd, Ciphertext& cipher, Ciphertext& cipher1, Ciphertext& cipher2);
 
 	void DecryptionShare(Plaintext& plain_t, Ciphertext& cipher, SecretKey& secretKey, ZZ* cipherAdd);
 
-	void Decryption(Plaintext& plain_t, Ciphertext& cipherAdd, Plaintext& plain_t1);
+	void Decryption(Plaintext& plain_t, Ciphertext& cipherAdd, Plaintext& plain_t1, Plaintext& plain_t2);
     
+	void ZZ_Receive(ZZ* receive, int socket, string op);
+
+	void ZZ_Send(ZZ* send, int socket, string op);
 };
 
 #endif

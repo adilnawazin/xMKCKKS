@@ -12,8 +12,17 @@ int main(int argc, char **argv) {
 	long logp = 40; 						// (Scaling) message will be quantized by multiplying 2^logp (larger value --> more accuracy)
 	long logn = 15; 						// (The number of slots) should be less than logN in params.h
 	cout << "Start listening" << endl;
-	server server;
-	int sock = server.estab_conn();
+	server server1;
+	server server2;
+	int port1 = 8080;
+	int port2 = 8081;
+	int sock1 = 0;
+	int sock2 = 0;
+	sock1 = server1.estab_conn(port1);
+	sock2 = server2.estab_conn(port2);
+	do{
+		sleep(3);
+	} while (sock1 == 0 || sock2== 0);
 
 	if(string (argv[1])=="--h"){
 		cout<< "Please specify number of trials and number of rounds per trial in following format to run this test:"<<endl;
@@ -59,60 +68,22 @@ int main(int argc, char **argv) {
 	timeutils.start("Send AXP to Users");
 	ZZ* axP = new ZZ[N];
 	ring.sampleUniform2(axP, logQQ);
-    stringstream stream;							// buffer for data (recv, send)
-	char buffer[512];
-	float progress = 0.0;
-	for (i= 0; i<N; i++)
-	{
-	stream = stringstream();						// clear buffer
-	stream << axP[i];
-	int bytesent=sizeof(buffer);
-    memset(buffer, 0 , sizeof(buffer));
-	strcpy(buffer, stream.str().c_str());			// copy a[i] to buffer
-	if(bytesent != sizeof(buffer))
-	{
-		i--;
-		// cout <<"i " << i<<endl;
-		// cout << "b " <<bytesent << endl;
-		continue;
-	}
-	bytesent = server::tcp_send(sock, buffer);					// send to user-a
-	progress = (float(i)/float(N))*100;
-	cout << "Sending Common Reference String to Devices ... " << progress << "%"<<"\t\r" <<flush;
-	}
-	cout << "\n" ;
+	scheme.ZZ_Send(axP, sock1, "AXP ");
+	scheme.ZZ_Send(axP, sock2, "AXP ");
 	timeutils.stop("Send AXP to Users");
 	ZZ* pkey = scheme.PublicKeyGeneration(secretKey, axP);
 //	Joint Public Key Generation at Server (b' = b1+b2+...+bn, e)
 	ZZ* pkey1  = new ZZ[N];
+	ZZ* pkey2 = new ZZ[N];
 	timeutils.start("Receive Key from Users");
-	progress = 0.0;
-	for (i=0; i<N;i++)
-	{
-	memset (buffer,0,sizeof(buffer));
-	server.tcp_recv(sock, buffer);
-	// cout<< "pkey["<<i<<"]: "<< buffer <<endl;
-	pkey1[i] = conv<ZZ>(buffer);
-	progress = (float(i)/float(N))*100;
-	cout << "Receiving Key from Devices ... " << progress << "%"<<"\t\r" <<flush;
-	}
-	cout << "\n" ;
-	timeutils.stop("Receive Key from Users");
+	scheme.ZZ_Receive(pkey1, sock1, "Public Key ");
+	scheme.ZZ_Receive(pkey2, sock2, "Public Key ");
     
-	ZZ* jkey_send= scheme.Jkeysend(axP ,pkey, pkey1);
+	ZZ* jkey_send= scheme.Jkeysend(axP ,pkey, pkey1, pkey2);
+	delete[] pkey1, delete[] pkey2; delete[] pkey;
 	timeutils.start("Send Joint Key to Users");
-	progress = 0.0;
-	for (i=0;i<N;i++)
-	{
-	memset(buffer,0, sizeof(buffer));
-	stream = stringstream();
-	stream << jkey_send[i];
-	strcpy(buffer, stream.str().c_str());
-	server.tcp_send(sock, buffer);
-	progress = (float(i)/float(N))*100;
-	cout << "Sending Joint Key to Devices... " << progress << "%"<<"\t\r" <<flush;
-	}
-	cout << "\n" ;
+	scheme.ZZ_Send(jkey_send, sock1, "Joint Key ");
+	scheme.ZZ_Send(jkey_send, sock2, "Joint Key ");
 	timeutils.stop("Send Joint Key to Users");
 	Key* jkey = scheme.JointKeyGeneration(axP, jkey_send);
 //	Encryption at Device D(cipher = (v.b' + m + e) , (v.a + e))
@@ -123,67 +94,43 @@ int main(int argc, char **argv) {
     timeutils.stop("Encryption");
 // 	Cipher Add(C_Sum0, C_sum1 = SUM(v.b' + m + e), SUM(v.a + e))
 	timeutils.start("Receive CipherText from the Users");
-	ZZ* ctax = new ZZ[N];
-	ZZ* ctbx = new ZZ[N];
-	progress = 0.0;
-	for (i=0; i<N;i++)
-	{
-	memset (buffer,0,sizeof(buffer));
-	server.tcp_recv(sock, buffer);
-	ctax[i] = conv<ZZ>(buffer);
-	progress = (float(i)/float(N))*100;
-	cout << "Receive Ciphertext (c0)....................." << progress << "%"<<"\t\r" <<flush;
-	}
-	cout << "\n" ;
-	progress = 0.0;
-	for (i=0; i<N;i++)
-	{
-	memset (buffer,0,sizeof(buffer));
-	server.tcp_recv(sock, buffer);
-	ctbx[i] = conv<ZZ>(buffer);
-	progress = (float(i)/float(N))*100;
-	cout << "Receive Ciphertext (c1)....................." << progress << "%"<<"\t\r" <<flush;
-	}
-	cout << "\n" ;
+	ZZ* ctax1 = new ZZ[N];
+	ZZ* ctbx1 = new ZZ[N];
+	ZZ* ctax2 = new ZZ[N];
+	ZZ* ctbx2 = new ZZ[N];
+	
+	scheme.ZZ_Receive(ctax1, sock1, "Cipher Text (Co) ");
+	scheme.ZZ_Receive(ctbx1, sock1, "Cipher Text (C1) ");
+	scheme.ZZ_Receive(ctax2, sock2, "Cipher Text (Co) ");
+	scheme.ZZ_Receive(ctbx2, sock2, "Cipher Text (C1) ");
+	
 	Ciphertext cipher1;
-	cipher1.ax = ctax;
-	cipher1.bx = ctbx;
+	Ciphertext cipher2;
+	cipher1.ax = ctax1;
+	cipher1.bx = ctbx1;
+	cipher2.ax = ctax2;
+	cipher2.bx = ctbx2;
 	timeutils.stop("Receive CipherText from the Users");
     Ciphertext cipherAdd;
-	scheme.AddCipherText(cipherAdd, cipher, cipher1);
-	timeutils.start("CipherAdd to devices");
-	for (i= 0; i<N; i++)
-	{
-	stream = stringstream();						// clear buffer
-    memset(buffer, 0 , sizeof(buffer));
-	stream << cipherAdd.ax[i];
-	strcpy(buffer, stream.str().c_str());			// copy a[i] to buffer
-    server::tcp_send(sock, buffer);					// send to user-a
-	progress = (float(i)/float(N))*100;
-	cout << "Sending CiphertextAdd (c1)....................." << progress << "%"<<"\t\r" <<flush;
-	}
-	cout << "\n" ;
-	timeutils.stop("CipherAdd to devices");    
+	scheme.AddCipherText(cipherAdd, cipher, cipher1, cipher2);
+	timeutils.start("Send CipherAdd to devices");
+	scheme.ZZ_Send(cipherAdd.ax, sock1, "CiphertextADD (c1) ");
+	scheme.ZZ_Send(cipherAdd.ax, sock2, "CiphertextADD (c1) ");
+	timeutils.stop("CipherAdd to devices"); 
 	Plaintext plain_t;
 	scheme.DecryptionShare(plain_t, cipher, secretKey, cipherAdd.ax);
 	timeutils.start("Receive Partial Decryption Share from Users");
-	ZZ* partial_pt = new ZZ[N];
-	progress = 0.;
-	for (i=0; i<N;i++)
-	{
-	memset (buffer,0,sizeof(buffer));
-	server.tcp_recv(sock, buffer);
-	partial_pt[i] = conv<ZZ>(buffer);
-	progress = (float(i)/float(N))*100;
-	cout << "Receive Decryption share (Di)....................." << progress << "%"<<"\t\r" <<flush;
-	}
-	cout << "\n" ;
-    Plaintext plain_t1;
-	plain_t1.mx = partial_pt;
+	ZZ* partial_pt1 = new ZZ[N];
+	ZZ* partial_pt2 = new ZZ[N];
+	scheme.ZZ_Receive(partial_pt1, sock1, "Partial Decryption Share ");
+	scheme.ZZ_Receive(partial_pt2, sock2, "Partial Decryption Share ");
+	Plaintext plain_t1;
+	Plaintext plain_t2;
+	plain_t1.mx = partial_pt1;
+	plain_t2.mx = partial_pt2;
 	timeutils.stop("Receive Partial Decryption Share from Users");
 //	Merge Decryption (m = C_sum0 + SUM(D_i) + e) and decode
-	scheme.Decryption(plain_t, cipherAdd, plain_t1);
-
+	scheme.Decryption(plain_t, cipherAdd, plain_t1, plain_t2);
 	// timeutils.start("Send Decryption to client");
     // for(i=0; i<N; i++)
     // {

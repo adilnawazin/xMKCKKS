@@ -12,12 +12,12 @@ server::~server()
     //dtor
 }
 
-int server::estab_conn()
+int server::estab_conn(int port)
 {
     int listening  = socket(AF_INET, SOCK_STREAM, 0);
     sockaddr_in hint;
     hint.sin_family = AF_INET;
-    hint.sin_port = htons(PORT);
+    hint.sin_port = htons(port);
     inet_pton(AF_INET, "0.0.0.0", &hint.sin_addr);
 
     if (bind(listening, (sockaddr*)&hint, sizeof(hint)) == -1)

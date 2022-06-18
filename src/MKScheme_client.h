@@ -48,6 +48,9 @@ public:
 
 	void Decryption(Plaintext& plain_t, Ciphertext& cipherAdd, Plaintext& plain_t1);
     
+	void ZZ_Receive(ZZ* receive, int socket, string op);
+
+	void ZZ_Send(ZZ* send, int socket, string op);
 };
 
 #endif
