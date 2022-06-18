@@ -103,15 +103,18 @@ int main(int argc, char **argv) {
 	scheme.ZZ_Receive(ctbx1, sock1, "Cipher Text (C1) ");
 	scheme.ZZ_Receive(ctax2, sock2, "Cipher Text (Co) ");
 	scheme.ZZ_Receive(ctbx2, sock2, "Cipher Text (C1) ");
-	
+	cout << "ctax1: " << ctax1 <<"\n";
+	cout << "ctbx1: " << ctbx1 <<"\n";	
 	Ciphertext cipher1;
 	Ciphertext cipher2;
 	cipher1.ax = ctax1;
 	cipher1.bx = ctbx1;
 	cipher2.ax = ctax2;
 	cipher2.bx = ctbx2;
+	cout << "cipher1.ax: " << cipher1.ax << "\n";
+	cout << "cipher1.bx: " << cipher1.bx << "\n";
 	timeutils.stop("Receive CipherText from the Users");
-    Ciphertext cipherAdd;
+	Ciphertext cipherAdd;
 	scheme.AddCipherText(cipherAdd, cipher, cipher1, cipher2);
 	timeutils.start("Send CipherAdd to devices");
 	scheme.ZZ_Send(cipherAdd.ax, sock1, "CiphertextADD (c1) ");
@@ -130,21 +133,10 @@ int main(int argc, char **argv) {
 	plain_t2.mx = partial_pt2;
 	timeutils.stop("Receive Partial Decryption Share from Users");
 //	Merge Decryption (m = C_sum0 + SUM(D_i) + e) and decode
-	scheme.Decryption(plain_t, cipherAdd, plain_t1, plain_t2);
-	// timeutils.start("Send Decryption to client");
-    // for(i=0; i<N; i++)
-    // {
-    // memset(buffer, 0, sizeof(buffer));
-    // stream = stringstream();
-	// stream << plain_t.mx[i];
-	// strcpy(buffer, stream.str().c_str());
-	// server.tcp_send(sock, buffer);
-	// // cout<< "decrypted plaintext = " << plain_t.mx[i]<< endl;
-    // }
-	// timeutils.stop("Send Decryption to client");
-	
+	scheme.Decryption(plain_t, cipherAdd, plain_t1, plain_t2);	
 	complex<double>* res=scheme.decode(plain_t);
 	StringUtils::showVec_RP(res,19);
+
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	//Compare Results
@@ -159,5 +151,5 @@ int main(int argc, char **argv) {
 	// cout<<"Output  : ";
 	// StringUtils::compare(madd,res,n,"Add");
 } 
-	return 0;
+	// return 0;
 }
