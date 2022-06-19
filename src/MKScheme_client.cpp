@@ -59,14 +59,6 @@ ZZ* MKScheme_client::PublicKeyGeneration(SecretKey& EncKey, ZZ* axP){
 	return bxP;
 }
 
-ZZ* MKScheme_client::Jkeysend(ZZ* axP, ZZ* bxP, ZZ* bxP1)
-{
-	SetNumThreads(8);
-	ZZ* bxSum = new ZZ[N];
-	ring.addAndEqual(bxSum, bxP, QQ);
-	ring.addAndEqual(bxSum, bxP1, QQ);
-	return bxSum;
-}
 Key* MKScheme_client::JointKeyGeneration( ZZ* axP, ZZ* bxSum) {
 
 	Key* keySum = new Key();

@@ -25,10 +25,19 @@ int client::connect_serv (int port, string ipadd)
     inet_pton(AF_INET, ipadd.c_str(), &hint.sin_addr);
     //	Connect to the server on the socket
     int connectRes = connect(sock, (sockaddr*)&hint, sizeof(hint));
-    while(connectRes==-1)
+	int trie = 0;
+	if(connectRes==-1)
 	{
-		cout<< "couldn't connect to server Retrying! \t\r"<<flush;
-		connectRes = connect(sock, (sockaddr*)&hint, sizeof(hint));
+		do{
+			cout<< "couldn't connect to server Retrying! \t\r"<<flush;
+			sleep(3);
+			connectRes = connect(sock, (sockaddr*)&hint, sizeof(hint));
+			if(connectRes!=-1) break;
+			trie++;
+		}while(trie!=10);
+		
+		if(connectRes==-1) return 0;
+		else return sock;
 	}
 	return sock;
 }

@@ -135,6 +135,9 @@ int main(int argc, char **argv) {
 //	Merge Decryption (m = C_sum0 + SUM(D_i) + e) and decode
 	scheme.Decryption(plain_t, cipherAdd, plain_t1, plain_t2);	
 	complex<double>* res=scheme.decode(plain_t);
+	for (int i = 0; i<100; i++){
+		cout<< res[i]<<"\n";
+	}
 	StringUtils::showVec_RP(res,19);
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

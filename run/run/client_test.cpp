@@ -29,11 +29,6 @@ int main(int argc, char **argv) {
     cout << "Connecting" << endl;
 	client client;
 	clientsock = client.connect_serv(port, IPADD);
-    if(clientsock ==0)
-    {
-        cerr<< "could not connect\n";
-        return 0;
-    }
 	int sum = 0;
 	double x;
 	ifstream inFile;
@@ -46,8 +41,8 @@ int main(int argc, char **argv) {
 	timeutils.start("Data Import");
 	double* mvec = EvaluatorUtils::randomRealArray(n);
 	// inFile.open("/home/adel/heaan_test/doc_T1_"+round+"_"+trial+".txt");
-	inFile.open("/home/nano1/xMKCKKS/test_docs/doc_T1_"+round+"_"+trial+".txt");
-	// inFile.open("/home/nano2/xMKCKKS/test_docs/doc_T1_"+round+"_"+trial+".txt");	
+	// inFile.open("/home/nano1/xMKCKKS/test_docs/doc_T1_"+round+"_"+trial+".txt");
+	inFile.open("/home/nano2/xMKCKKS/test_docs/doc_T1_"+round+"_"+trial+".txt");	
     long i=0;
 	if (!inFile) {
 	cout << "Unable to open file doc_T1_"+round+"_"+trial<<endl;
@@ -80,7 +75,6 @@ int main(int argc, char **argv) {
     scheme.ZZ_Send(pkey1, clientsock, "Public Key ");
     timeutils.stop("Send Key to server");
     timeutils.start("Receive Joint Key from server");
-    delete[] pkey1;
     ZZ* jkeyrecv = new ZZ[N];
     scheme.ZZ_Receive(jkeyrecv, clientsock, "Joint Key ");
     // uint64_t* rbx = new uint64_t[Nnprimes];

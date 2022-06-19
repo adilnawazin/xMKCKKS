@@ -36,8 +36,6 @@ public:
 
 	ZZ* PublicKeyGeneration(SecretKey& EncKey, ZZ* axP);
 
-	ZZ* Jkeysend(ZZ* axP, ZZ* bxP, ZZ* bxP1);
-
 	Key* JointKeyGeneration(ZZ* axP, ZZ* bxSum);
 
 	void EncryptMsg(Ciphertext& cipher, Plaintext& plain, Key* jointkey);
