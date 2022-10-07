@@ -31,5 +31,3 @@ Copyright (c) by CryptoLab inc. This program is licensed under a Creative Common
 
 
 # Citation
-
-Ma, J, Naas, S-A, Sigg, S, Lyu, X. Privacy-preserving federated learning based on multi-key homomorphic encryption. Int J Intell Syst. 2022; 1- 22. doi:10.1002/int.22818
